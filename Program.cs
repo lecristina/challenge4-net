@@ -241,11 +241,6 @@ try
         {
             dbLogger.LogInformation("Nenhuma migration pendente - banco atualizado.");
         }
-        else
-        {
-            // Em desenvolvimento, garantir que o banco existe
-            context.Database.EnsureCreated();
-        }
     }
 }
 catch (Exception ex)
