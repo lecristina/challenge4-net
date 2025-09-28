@@ -14,18 +14,18 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     
     - name: Set up .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.x'
+        dotnet-version: '9.0.x'
 
     - name: Build with dotnet
-      run: dotnet build --configuration Release
+      run: dotnet build challenge-3-net/challenge-3-net/challenge-3-net.csproj --configuration Release
     
     - name: dotnet publish
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp 
+      run: dotnet publish challenge-3-net/challenge-3-net/challenge-3-net.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp 
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
