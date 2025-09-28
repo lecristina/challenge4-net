@@ -181,36 +181,28 @@ app.MapGet("/health/database", async (ApplicationDbContext context) => {
     }
 });
 
-// Endpoint para aplicar migrations manualmente (GET para facilitar teste no browser)
-app.MapGet("/admin/migrate", async (ApplicationDbContext context, ILogger<Program> adminLogger) => {
+// Endpoint para verificar dados no banco
+app.MapGet("/admin/data", async (ApplicationDbContext context) => {
     try 
     {
-        var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
-        if (pendingMigrations.Any())
-        {
-            adminLogger.LogInformation("Aplicando migrations: {Migrations}", string.Join(", ", pendingMigrations));
-            await context.Database.MigrateAsync();
-            
-            var appliedMigrations = await context.Database.GetAppliedMigrationsAsync();
-            return Results.Ok(new { 
-                Status = "Success", 
-                Message = "Migrations aplicadas com sucesso",
-                AppliedMigrations = appliedMigrations,
-                Timestamp = DateTime.UtcNow
-            });
-        }
-        else
-        {
-            return Results.Ok(new { 
-                Status = "No Action", 
-                Message = "Nenhuma migration pendente",
-                Timestamp = DateTime.UtcNow
-            });
-        }
+        var usuarios = await context.Usuarios.CountAsync();
+        var motos = await context.Motos.CountAsync();
+        var operacoes = await context.Operacoes.CountAsync();
+        var statusMotos = await context.StatusMotos.CountAsync();
+        
+        return Results.Ok(new { 
+            Status = "Success",
+            DataCounts = new {
+                Usuarios = usuarios,
+                Motos = motos,
+                Operacoes = operacoes,
+                StatusMotos = statusMotos
+            },
+            Timestamp = DateTime.UtcNow
+        });
     }
     catch (Exception ex)
     {
-        adminLogger.LogError(ex, "Erro ao aplicar migrations");
         return Results.Ok(new { 
             Status = "Error", 
             Error = ex.Message,
@@ -228,18 +220,19 @@ try
     {
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         
-        // Sempre aplicar migrations pendentes em qualquer ambiente
-        var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
-        if (pendingMigrations.Any())
+        // Verificar se o banco está acessível (as tabelas já foram criadas pelo script SQL)
+        var canConnect = await context.Database.CanConnectAsync();
+        if (canConnect)
         {
-            dbLogger.LogInformation("Aplicando {Count} migrations pendentes: {Migrations}", 
-                pendingMigrations.Count(), string.Join(", ", pendingMigrations));
-            await context.Database.MigrateAsync();
-            dbLogger.LogInformation("Migrations aplicadas com sucesso!");
+            dbLogger.LogInformation("Banco de dados conectado com sucesso!");
+            
+            // Verificar se existem dados de teste
+            var usuarioCount = await context.Usuarios.CountAsync();
+            dbLogger.LogInformation("Usuários encontrados no banco: {Count}", usuarioCount);
         }
         else
         {
-            dbLogger.LogInformation("Nenhuma migration pendente - banco atualizado.");
+            dbLogger.LogWarning("Não foi possível conectar ao banco de dados.");
         }
     }
 }
