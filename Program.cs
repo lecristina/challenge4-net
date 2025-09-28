@@ -90,22 +90,30 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Log de inicialização
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+logger.LogInformation("=== Iniciando aplicação ===");
+logger.LogInformation("Ambiente: {Environment}", app.Environment.EnvironmentName);
+logger.LogInformation("Connection String presente: {HasConnectionString}", 
+    !string.IsNullOrEmpty(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Habilitar Swagger em todos os ambientes para facilitar testes
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sistema de Gestão de Motos API v1");
+    if (app.Environment.IsDevelopment())
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sistema de Gestão de Motos API v1");
-        c.RoutePrefix = string.Empty; // Para acessar o Swagger na raiz
-        c.DocumentTitle = "Sistema de Gestão de Motos API";
-        c.DisplayRequestDuration();
-        c.EnableDeepLinking();
-        c.EnableFilter();
-        c.ShowExtensions();
-        c.EnableValidator();
-    });
-}
+        c.RoutePrefix = string.Empty; // Para acessar o Swagger na raiz apenas em dev
+    }
+    c.DocumentTitle = "Sistema de Gestão de Motos API";
+    c.DisplayRequestDuration();
+    c.EnableDeepLinking();
+    c.EnableFilter();
+    c.ShowExtensions();
+    c.EnableValidator();
+});
 
 app.UseHttpsRedirection();
 
@@ -115,11 +123,66 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Endpoint de health check
-app.MapGet("/health", () => new { 
-    Status = "Healthy", 
-    Timestamp = DateTime.UtcNow,
-    Environment = app.Environment.EnvironmentName 
+// Endpoint de health check detalhado
+app.MapGet("/health", (IServiceProvider services) => {
+    try 
+    {
+        var config = services.GetRequiredService<IConfiguration>();
+        var connectionString = config.GetConnectionString("DefaultConnection");
+        
+        return new { 
+            Status = "Healthy", 
+            Timestamp = DateTime.UtcNow,
+            Environment = app.Environment.EnvironmentName,
+            HasConnectionString = !string.IsNullOrEmpty(connectionString),
+            ConnectionStringLength = connectionString?.Length ?? 0,
+            EnvironmentVariables = new {
+                DB_SERVER = Environment.GetEnvironmentVariable("DB_SERVER"),
+                DB_DATABASE = Environment.GetEnvironmentVariable("DB_DATABASE"),
+                DB_USERNAME = Environment.GetEnvironmentVariable("DB_USERNAME"),
+                HasPassword = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DB_PASSWORD")),
+                ASPNETCORE_ENVIRONMENT = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+            }
+        };
+    }
+    catch (Exception ex)
+    {
+        return new { 
+            Status = "Error", 
+            Error = ex.Message,
+            Timestamp = DateTime.UtcNow 
+        };
+    }
+});
+
+// Endpoint de diagnóstico do banco
+app.MapGet("/health/database", async (IServiceProvider services) => {
+    try 
+    {
+        var scope = services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        
+        var canConnect = await context.Database.CanConnectAsync();
+        var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+        var appliedMigrations = await context.Database.GetAppliedMigrationsAsync();
+        
+        return new { 
+            Status = canConnect ? "Connected" : "Cannot Connect",
+            CanConnect = canConnect,
+            PendingMigrations = pendingMigrations,
+            AppliedMigrations = appliedMigrations,
+            Timestamp = DateTime.UtcNow
+        };
+    }
+    catch (Exception ex)
+    {
+        return new { 
+            Status = "Database Error", 
+            Error = ex.Message,
+            InnerError = ex.InnerException?.Message,
+            Timestamp = DateTime.UtcNow 
+        };
+    }
 });
 
 // Configurar banco de dados com tratamento de erro
