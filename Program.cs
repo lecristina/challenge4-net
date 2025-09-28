@@ -181,8 +181,8 @@ app.MapGet("/health/database", async (ApplicationDbContext context) => {
     }
 });
 
-// Endpoint para aplicar migrations manualmente
-app.MapPost("/admin/migrate", async (ApplicationDbContext context, ILogger<Program> adminLogger) => {
+// Endpoint para aplicar migrations manualmente (GET para facilitar teste no browser)
+app.MapGet("/admin/migrate", async (ApplicationDbContext context, ILogger<Program> adminLogger) => {
     try 
     {
         var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
@@ -228,21 +228,18 @@ try
     {
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         
-        if (app.Environment.IsProduction())
+        // Sempre aplicar migrations pendentes em qualquer ambiente
+        var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+        if (pendingMigrations.Any())
         {
-            // Em produção, aplicar migrations se necessário
-            var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
-            if (pendingMigrations.Any())
-            {
-                dbLogger.LogInformation("Aplicando {Count} migrations pendentes: {Migrations}", 
-                    pendingMigrations.Count(), string.Join(", ", pendingMigrations));
-                await context.Database.MigrateAsync();
-                dbLogger.LogInformation("Migrations aplicadas com sucesso!");
-            }
-            else
-            {
-                dbLogger.LogInformation("Nenhuma migration pendente.");
-            }
+            dbLogger.LogInformation("Aplicando {Count} migrations pendentes: {Migrations}", 
+                pendingMigrations.Count(), string.Join(", ", pendingMigrations));
+            await context.Database.MigrateAsync();
+            dbLogger.LogInformation("Migrations aplicadas com sucesso!");
+        }
+        else
+        {
+            dbLogger.LogInformation("Nenhuma migration pendente - banco atualizado.");
         }
         else
         {
