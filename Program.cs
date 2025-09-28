@@ -124,13 +124,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Endpoint de health check detalhado
-app.MapGet("/health", (IServiceProvider services) => {
+app.MapGet("/health", (IConfiguration config) => {
     try 
     {
-        var config = services.GetRequiredService<IConfiguration>();
         var connectionString = config.GetConnectionString("DefaultConnection");
         
-        return new { 
+        return Results.Ok(new { 
             Status = "Healthy", 
             Timestamp = DateTime.UtcNow,
             Environment = app.Environment.EnvironmentName,
@@ -143,45 +142,42 @@ app.MapGet("/health", (IServiceProvider services) => {
                 HasPassword = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DB_PASSWORD")),
                 ASPNETCORE_ENVIRONMENT = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
             }
-        };
+        });
     }
     catch (Exception ex)
     {
-        return new { 
+        return Results.Ok(new { 
             Status = "Error", 
             Error = ex.Message,
             Timestamp = DateTime.UtcNow 
-        };
+        });
     }
 });
 
 // Endpoint de diagnóstico do banco
-app.MapGet("/health/database", async (IServiceProvider services) => {
+app.MapGet("/health/database", async (ApplicationDbContext context) => {
     try 
     {
-        var scope = services.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        
         var canConnect = await context.Database.CanConnectAsync();
         var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
         var appliedMigrations = await context.Database.GetAppliedMigrationsAsync();
         
-        return new { 
+        return Results.Ok(new { 
             Status = canConnect ? "Connected" : "Cannot Connect",
             CanConnect = canConnect,
             PendingMigrations = pendingMigrations,
             AppliedMigrations = appliedMigrations,
             Timestamp = DateTime.UtcNow
-        };
+        });
     }
     catch (Exception ex)
     {
-        return new { 
+        return Results.Ok(new { 
             Status = "Database Error", 
             Error = ex.Message,
             InnerError = ex.InnerException?.Message,
             Timestamp = DateTime.UtcNow 
-        };
+        });
     }
 });
 
@@ -210,8 +206,8 @@ try
 }
 catch (Exception ex)
 {
-    var logger = app.Services.GetRequiredService<ILogger<Program>>();
-    logger.LogError(ex, "Erro ao configurar o banco de dados durante a inicialização");
+    var dbLogger = app.Services.GetRequiredService<ILogger<Program>>();
+    dbLogger.LogError(ex, "Erro ao configurar o banco de dados durante a inicialização");
     // Não parar a aplicação por causa do banco - deixar continuar e tratar nos endpoints
 }
 
