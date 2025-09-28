@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\challenge-3-net.props" />
+</Project>

@@ -1,0 +1,2315 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Sistema de Gestão de Motos API",
+    "description": "API RESTful para gerenciamento de motos, usuários, operações e status",
+    "contact": {
+      "name": "Equipe de Desenvolvimento",
+      "email": "dev@fiap.com"
+    },
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Motos": {
+      "get": {
+        "tags": [
+          "Motos"
+        ],
+        "summary": "Lista todas as motos com paginação",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Número da página (padrão: 1)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Tamanho da página (padrão: 10)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna a lista de motos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MotoResponseDtoPagedResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Motos"
+        ],
+        "summary": "Cria uma nova moto",
+        "requestBody": {
+          "description": "Dados da moto a ser criada",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarMotoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarMotoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarMotoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Moto criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MotoResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Placa ou chassi já existem",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Motos/{id}": {
+      "get": {
+        "tags": [
+          "Motos"
+        ],
+        "summary": "Busca uma moto por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da moto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna a moto encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MotoResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Moto não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Motos"
+        ],
+        "summary": "Atualiza uma moto existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da moto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados atualizados da moto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarMotoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarMotoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarMotoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Moto atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MotoResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Moto não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Placa ou chassi já existem",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Motos"
+        ],
+        "summary": "Exclui uma moto",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da moto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Moto excluída com sucesso"
+          },
+          "404": {
+            "description": "Moto não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Motos/placa/{placa}": {
+      "get": {
+        "tags": [
+          "Motos"
+        ],
+        "summary": "Busca uma moto por placa",
+        "parameters": [
+          {
+            "name": "placa",
+            "in": "path",
+            "description": "Placa da moto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna a moto encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MotoResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Moto não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Motos/chassi/{chassi}": {
+      "get": {
+        "tags": [
+          "Motos"
+        ],
+        "summary": "Busca uma moto por chassi",
+        "parameters": [
+          {
+            "name": "chassi",
+            "in": "path",
+            "description": "Chassi da moto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna a moto encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MotoResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Moto não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Motos/usuario/{usuarioId}": {
+      "get": {
+        "tags": [
+          "Motos"
+        ],
+        "summary": "Lista motos por usuário",
+        "parameters": [
+          {
+            "name": "usuarioId",
+            "in": "path",
+            "description": "ID do usuário",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Número da página (padrão: 1)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Tamanho da página (padrão: 10)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna a lista de motos do usuário",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MotoResponseDtoPagedResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Operacoes": {
+      "get": {
+        "tags": [
+          "Operacoes"
+        ],
+        "summary": "Lista todas as operações com paginação",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Número da página (padrão: 1)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Tamanho da página (padrão: 10)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna a lista de operações",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperacaoResponseDtoPagedResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Operacoes"
+        ],
+        "summary": "Cria uma nova operação",
+        "requestBody": {
+          "description": "Dados da operação a ser criada",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarOperacaoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarOperacaoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarOperacaoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Operação criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperacaoResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Moto ou usuário não encontrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Operacoes/{id}": {
+      "get": {
+        "tags": [
+          "Operacoes"
+        ],
+        "summary": "Busca uma operação por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da operação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna a operação encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperacaoResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Operação não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Operacoes"
+        ],
+        "summary": "Atualiza uma operação existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da operação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados atualizados da operação",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarOperacaoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarOperacaoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarOperacaoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operação atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperacaoResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Operação não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Operacoes"
+        ],
+        "summary": "Exclui uma operação",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da operação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Operação excluída com sucesso"
+          },
+          "404": {
+            "description": "Operação não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/StatusMotos": {
+      "get": {
+        "tags": [
+          "StatusMotos"
+        ],
+        "summary": "Lista todos os status com paginação",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Número da página (padrão: 1)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Tamanho da página (padrão: 10)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna a lista de status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusMotoResponseDtoPagedResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "StatusMotos"
+        ],
+        "summary": "Cria um novo status",
+        "requestBody": {
+          "description": "Dados do status a ser criado",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarStatusMotoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarStatusMotoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarStatusMotoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Status criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusMotoResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Moto ou usuário não encontrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/StatusMotos/{id}": {
+      "get": {
+        "tags": [
+          "StatusMotos"
+        ],
+        "summary": "Busca um status por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do status",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna o status encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusMotoResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "StatusMotos"
+        ],
+        "summary": "Atualiza um status existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do status",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados atualizados do status",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarStatusMotoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarStatusMotoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarStatusMotoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Status atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusMotoResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status, moto ou usuário não encontrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "StatusMotos"
+        ],
+        "summary": "Exclui um status",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do status",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Status excluído com sucesso"
+          },
+          "404": {
+            "description": "Status não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/StatusMotos/moto/{motoId}/atual": {
+      "get": {
+        "tags": [
+          "StatusMotos"
+        ],
+        "summary": "Busca o status atual de uma moto",
+        "parameters": [
+          {
+            "name": "motoId",
+            "in": "path",
+            "description": "ID da moto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna o status atual da moto",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusMotoResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Moto não encontrada ou sem status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/StatusMotos/moto/{motoId}/historico": {
+      "get": {
+        "tags": [
+          "StatusMotos"
+        ],
+        "summary": "Lista histórico de status de uma moto",
+        "parameters": [
+          {
+            "name": "motoId",
+            "in": "path",
+            "description": "ID da moto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Número da página (padrão: 1)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Tamanho da página (padrão: 10)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna o histórico de status da moto",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusMotoResponseDtoPagedResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Moto não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/StatusMotos/tipo/{status}": {
+      "get": {
+        "tags": [
+          "StatusMotos"
+        ],
+        "summary": "Lista status por tipo",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "description": "Tipo de status",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/StatusMotoEnum"
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Número da página (padrão: 1)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Tamanho da página (padrão: 10)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna a lista de status do tipo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusMotoResponseDtoPagedResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Usuarios": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Lista todos os usuários com paginação",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Número da página (padrão: 1)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Tamanho da página (padrão: 10)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna a lista de usuários",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponseDtoPagedResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Cria um novo usuário",
+        "requestBody": {
+          "description": "Dados do usuário a ser criado",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarUsuarioDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarUsuarioDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarUsuarioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Email ou CNPJ já existem",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Usuarios/{id}": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Busca um usuário por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuário",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna o usuário encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Atualiza um usuário existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuário",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados atualizados do usuário",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarUsuarioDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarUsuarioDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarUsuarioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Email ou CNPJ já existem",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Exclui um usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuário",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Usuário excluído com sucesso"
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/WeatherForecast": {
+      "get": {
+        "tags": [
+          "WeatherForecast"
+        ],
+        "operationId": "GetWeatherForecast",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherForecast"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherForecast"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherForecast"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AtualizarMotoDto": {
+        "required": [
+          "chassi",
+          "placa",
+          "usuarioId"
+        ],
+        "type": "object",
+        "properties": {
+          "placa": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "Placa da moto"
+          },
+          "chassi": {
+            "maxLength": 17,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número do chassi da moto"
+          },
+          "motor": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Informações do motor da moto",
+            "nullable": true
+          },
+          "usuarioId": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "ID do usuário proprietário da moto",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para atualização de moto"
+      },
+      "AtualizarOperacaoDto": {
+        "required": [
+          "motoId",
+          "tipoOperacao",
+          "usuarioId"
+        ],
+        "type": "object",
+        "properties": {
+          "tipoOperacao": {
+            "$ref": "#/components/schemas/TipoOperacao"
+          },
+          "descricao": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string",
+            "description": "Descrição detalhada da operação",
+            "nullable": true
+          },
+          "motoId": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "ID da moto envolvida na operação",
+            "format": "int64"
+          },
+          "usuarioId": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "ID do usuário que realizou a operação",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para atualização de operação"
+      },
+      "AtualizarStatusMotoDto": {
+        "required": [
+          "area",
+          "motoId",
+          "status",
+          "usuarioId"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/StatusMotoEnum"
+          },
+          "descricao": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "description": "Descrição detalhada do status",
+            "nullable": true
+          },
+          "area": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Área onde a moto se encontra"
+          },
+          "motoId": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "ID da moto",
+            "format": "int64"
+          },
+          "usuarioId": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "ID do usuário que registrou o status",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para atualização de status de moto"
+      },
+      "AtualizarUsuarioDto": {
+        "required": [
+          "cnpj",
+          "email",
+          "nomeFilial",
+          "perfil"
+        ],
+        "type": "object",
+        "properties": {
+          "nomeFilial": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Nome da filial/empresa"
+          },
+          "email": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Email do usuário",
+            "format": "email"
+          },
+          "cnpj": {
+            "maxLength": 18,
+            "minLength": 0,
+            "type": "string",
+            "description": "CNPJ da empresa"
+          },
+          "endereco": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "description": "Endereço da empresa",
+            "nullable": true
+          },
+          "telefone": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "Telefone de contato",
+            "nullable": true
+          },
+          "perfil": {
+            "$ref": "#/components/schemas/PerfilUsuario"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para atualização de usuário"
+      },
+      "CriarMotoDto": {
+        "required": [
+          "chassi",
+          "placa",
+          "usuarioId"
+        ],
+        "type": "object",
+        "properties": {
+          "placa": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "Placa da moto"
+          },
+          "chassi": {
+            "maxLength": 17,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número do chassi da moto"
+          },
+          "motor": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Informações do motor da moto",
+            "nullable": true
+          },
+          "usuarioId": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "ID do usuário proprietário da moto",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para criação de moto"
+      },
+      "CriarOperacaoDto": {
+        "required": [
+          "motoId",
+          "tipoOperacao",
+          "usuarioId"
+        ],
+        "type": "object",
+        "properties": {
+          "tipoOperacao": {
+            "$ref": "#/components/schemas/TipoOperacao"
+          },
+          "descricao": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string",
+            "description": "Descrição detalhada da operação",
+            "nullable": true
+          },
+          "motoId": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "ID da moto envolvida na operação",
+            "format": "int64"
+          },
+          "usuarioId": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "ID do usuário que realizou a operação",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para criação de operação"
+      },
+      "CriarStatusMotoDto": {
+        "required": [
+          "area",
+          "motoId",
+          "status",
+          "usuarioId"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/StatusMotoEnum"
+          },
+          "descricao": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "description": "Descrição detalhada do status",
+            "nullable": true
+          },
+          "area": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Área onde a moto se encontra"
+          },
+          "motoId": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "ID da moto",
+            "format": "int64"
+          },
+          "usuarioId": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "ID do usuário que registrou o status",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para criação de status de moto"
+      },
+      "CriarUsuarioDto": {
+        "required": [
+          "cnpj",
+          "email",
+          "nomeFilial",
+          "perfil",
+          "senha"
+        ],
+        "type": "object",
+        "properties": {
+          "nomeFilial": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Nome da filial/empresa"
+          },
+          "email": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Email do usuário",
+            "format": "email"
+          },
+          "senha": {
+            "maxLength": 100,
+            "minLength": 6,
+            "type": "string",
+            "description": "Senha do usuário"
+          },
+          "cnpj": {
+            "maxLength": 18,
+            "minLength": 0,
+            "type": "string",
+            "description": "CNPJ da empresa"
+          },
+          "endereco": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "description": "Endereço da empresa",
+            "nullable": true
+          },
+          "telefone": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "Telefone de contato",
+            "nullable": true
+          },
+          "perfil": {
+            "$ref": "#/components/schemas/PerfilUsuario"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para criação de usuário"
+      },
+      "LinkDto": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "description": "URL do link",
+            "nullable": true
+          },
+          "rel": {
+            "type": "string",
+            "description": "Relação do link (self, next, previous, etc.)",
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "description": "Método HTTP do link",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Descrição do link",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para links HATEOAS"
+      },
+      "MotoResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Identificador único da moto",
+            "format": "int64"
+          },
+          "placa": {
+            "type": "string",
+            "description": "Placa da moto",
+            "nullable": true
+          },
+          "chassi": {
+            "type": "string",
+            "description": "Número do chassi da moto",
+            "nullable": true
+          },
+          "motor": {
+            "type": "string",
+            "description": "Informações do motor da moto",
+            "nullable": true
+          },
+          "usuarioId": {
+            "type": "integer",
+            "description": "ID do usuário proprietário da moto",
+            "format": "int64"
+          },
+          "nomeFilial": {
+            "type": "string",
+            "description": "Nome da filial proprietária",
+            "nullable": true
+          },
+          "dataCriacao": {
+            "type": "string",
+            "description": "Data de criação do registro",
+            "format": "date-time"
+          },
+          "dataAtualizacao": {
+            "type": "string",
+            "description": "Data da última atualização do registro",
+            "format": "date-time"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkDto"
+            },
+            "description": "Links HATEOAS",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para resposta de moto"
+      },
+      "MotoResponseDtoPagedResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MotoResponseDto"
+            },
+            "description": "Itens da página atual",
+            "nullable": true
+          },
+          "pageNumber": {
+            "type": "integer",
+            "description": "Número da página atual",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "Tamanho da página",
+            "format": "int32"
+          },
+          "totalItems": {
+            "type": "integer",
+            "description": "Total de itens",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "Total de páginas",
+            "format": "int32",
+            "readOnly": true
+          },
+          "hasPreviousPage": {
+            "type": "boolean",
+            "description": "Indica se há página anterior",
+            "readOnly": true
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "description": "Indica se há próxima página",
+            "readOnly": true
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkDto"
+            },
+            "description": "Links HATEOAS para navegação",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para resultado paginado"
+      },
+      "OperacaoResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Identificador único da operação",
+            "format": "int64"
+          },
+          "tipoOperacao": {
+            "$ref": "#/components/schemas/TipoOperacao"
+          },
+          "descricao": {
+            "type": "string",
+            "description": "Descrição detalhada da operação",
+            "nullable": true
+          },
+          "dataOperacao": {
+            "type": "string",
+            "description": "Data e hora da operação",
+            "format": "date-time"
+          },
+          "motoId": {
+            "type": "integer",
+            "description": "ID da moto envolvida na operação",
+            "format": "int64"
+          },
+          "placaMoto": {
+            "type": "string",
+            "description": "Placa da moto",
+            "nullable": true
+          },
+          "usuarioId": {
+            "type": "integer",
+            "description": "ID do usuário que realizou a operação",
+            "format": "int64"
+          },
+          "nomeUsuario": {
+            "type": "string",
+            "description": "Nome do usuário que realizou a operação",
+            "nullable": true
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkDto"
+            },
+            "description": "Links HATEOAS",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para resposta de operação"
+      },
+      "OperacaoResponseDtoPagedResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OperacaoResponseDto"
+            },
+            "description": "Itens da página atual",
+            "nullable": true
+          },
+          "pageNumber": {
+            "type": "integer",
+            "description": "Número da página atual",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "Tamanho da página",
+            "format": "int32"
+          },
+          "totalItems": {
+            "type": "integer",
+            "description": "Total de itens",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "Total de páginas",
+            "format": "int32",
+            "readOnly": true
+          },
+          "hasPreviousPage": {
+            "type": "boolean",
+            "description": "Indica se há página anterior",
+            "readOnly": true
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "description": "Indica se há próxima página",
+            "readOnly": true
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkDto"
+            },
+            "description": "Links HATEOAS para navegação",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para resultado paginado"
+      },
+      "PerfilUsuario": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "description": "Enum que define os perfis de usuário no sistema",
+        "format": "int32"
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "StatusMotoEnum": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "type": "integer",
+        "description": "Enum que define os possíveis status de uma moto",
+        "format": "int32"
+      },
+      "StatusMotoResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Identificador único do status",
+            "format": "int64"
+          },
+          "status": {
+            "$ref": "#/components/schemas/StatusMotoEnum"
+          },
+          "descricao": {
+            "type": "string",
+            "description": "Descrição detalhada do status",
+            "nullable": true
+          },
+          "area": {
+            "type": "string",
+            "description": "Área onde a moto se encontra",
+            "nullable": true
+          },
+          "dataStatus": {
+            "type": "string",
+            "description": "Data e hora do status",
+            "format": "date-time"
+          },
+          "motoId": {
+            "type": "integer",
+            "description": "ID da moto",
+            "format": "int64"
+          },
+          "placaMoto": {
+            "type": "string",
+            "description": "Placa da moto",
+            "nullable": true
+          },
+          "usuarioId": {
+            "type": "integer",
+            "description": "ID do usuário que registrou o status",
+            "format": "int64"
+          },
+          "nomeUsuario": {
+            "type": "string",
+            "description": "Nome do usuário que registrou o status",
+            "nullable": true
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkDto"
+            },
+            "description": "Links HATEOAS",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para resposta de status de moto"
+      },
+      "StatusMotoResponseDtoPagedResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StatusMotoResponseDto"
+            },
+            "description": "Itens da página atual",
+            "nullable": true
+          },
+          "pageNumber": {
+            "type": "integer",
+            "description": "Número da página atual",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "Tamanho da página",
+            "format": "int32"
+          },
+          "totalItems": {
+            "type": "integer",
+            "description": "Total de itens",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "Total de páginas",
+            "format": "int32",
+            "readOnly": true
+          },
+          "hasPreviousPage": {
+            "type": "boolean",
+            "description": "Indica se há página anterior",
+            "readOnly": true
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "description": "Indica se há próxima página",
+            "readOnly": true
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkDto"
+            },
+            "description": "Links HATEOAS para navegação",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para resultado paginado"
+      },
+      "TipoOperacao": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "type": "integer",
+        "description": "Enum que define os tipos de operações possíveis",
+        "format": "int32"
+      },
+      "UsuarioResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Identificador único do usuário",
+            "format": "int64"
+          },
+          "nomeFilial": {
+            "type": "string",
+            "description": "Nome da filial/empresa",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do usuário",
+            "nullable": true
+          },
+          "cnpj": {
+            "type": "string",
+            "description": "CNPJ da empresa",
+            "nullable": true
+          },
+          "endereco": {
+            "type": "string",
+            "description": "Endereço da empresa",
+            "nullable": true
+          },
+          "telefone": {
+            "type": "string",
+            "description": "Telefone de contato",
+            "nullable": true
+          },
+          "perfil": {
+            "$ref": "#/components/schemas/PerfilUsuario"
+          },
+          "dataCriacao": {
+            "type": "string",
+            "description": "Data de criação do registro",
+            "format": "date-time"
+          },
+          "dataAtualizacao": {
+            "type": "string",
+            "description": "Data da última atualização do registro",
+            "format": "date-time"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkDto"
+            },
+            "description": "Links HATEOAS",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para resposta de usuário"
+      },
+      "UsuarioResponseDtoPagedResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UsuarioResponseDto"
+            },
+            "description": "Itens da página atual",
+            "nullable": true
+          },
+          "pageNumber": {
+            "type": "integer",
+            "description": "Número da página atual",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "Tamanho da página",
+            "format": "int32"
+          },
+          "totalItems": {
+            "type": "integer",
+            "description": "Total de itens",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "Total de páginas",
+            "format": "int32",
+            "readOnly": true
+          },
+          "hasPreviousPage": {
+            "type": "boolean",
+            "description": "Indica se há página anterior",
+            "readOnly": true
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "description": "Indica se há próxima página",
+            "readOnly": true
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkDto"
+            },
+            "description": "Links HATEOAS para navegação",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para resultado paginado"
+      },
+      "WeatherForecast": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "temperatureC": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "temperatureF": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
