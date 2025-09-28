@@ -181,7 +181,47 @@ app.MapGet("/health/database", async (ApplicationDbContext context) => {
     }
 });
 
+// Endpoint para aplicar migrations manualmente
+app.MapPost("/admin/migrate", async (ApplicationDbContext context, ILogger<Program> adminLogger) => {
+    try 
+    {
+        var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+        if (pendingMigrations.Any())
+        {
+            adminLogger.LogInformation("Aplicando migrations: {Migrations}", string.Join(", ", pendingMigrations));
+            await context.Database.MigrateAsync();
+            
+            var appliedMigrations = await context.Database.GetAppliedMigrationsAsync();
+            return Results.Ok(new { 
+                Status = "Success", 
+                Message = "Migrations aplicadas com sucesso",
+                AppliedMigrations = appliedMigrations,
+                Timestamp = DateTime.UtcNow
+            });
+        }
+        else
+        {
+            return Results.Ok(new { 
+                Status = "No Action", 
+                Message = "Nenhuma migration pendente",
+                Timestamp = DateTime.UtcNow
+            });
+        }
+    }
+    catch (Exception ex)
+    {
+        adminLogger.LogError(ex, "Erro ao aplicar migrations");
+        return Results.Ok(new { 
+            Status = "Error", 
+            Error = ex.Message,
+            InnerError = ex.InnerException?.Message,
+            Timestamp = DateTime.UtcNow 
+        });
+    }
+});
+
 // Configurar banco de dados com tratamento de erro
+var dbLogger = app.Services.GetRequiredService<ILogger<Program>>();
 try
 {
     using (var scope = app.Services.CreateScope())
@@ -191,10 +231,17 @@ try
         if (app.Environment.IsProduction())
         {
             // Em produção, aplicar migrations se necessário
-            var pendingMigrations = context.Database.GetPendingMigrations();
+            var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
             if (pendingMigrations.Any())
             {
-                context.Database.Migrate();
+                dbLogger.LogInformation("Aplicando {Count} migrations pendentes: {Migrations}", 
+                    pendingMigrations.Count(), string.Join(", ", pendingMigrations));
+                await context.Database.MigrateAsync();
+                dbLogger.LogInformation("Migrations aplicadas com sucesso!");
+            }
+            else
+            {
+                dbLogger.LogInformation("Nenhuma migration pendente.");
             }
         }
         else
@@ -206,7 +253,6 @@ try
 }
 catch (Exception ex)
 {
-    var dbLogger = app.Services.GetRequiredService<ILogger<Program>>();
     dbLogger.LogError(ex, "Erro ao configurar o banco de dados durante a inicialização");
     // Não parar a aplicação por causa do banco - deixar continuar e tratar nos endpoints
 }
