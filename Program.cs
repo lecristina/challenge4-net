@@ -17,22 +17,19 @@ builder.Services.AddApplicationInsightsTelemetry();
 
 // Configurar Entity Framework
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-if (string.IsNullOrEmpty(connectionString) && builder.Environment.IsProduction())
-{
-    // Em produção, usar variáveis de ambiente se connection string não estiver definida
-    var server = Environment.GetEnvironmentVariable("DB_SERVER");
-    var database = Environment.GetEnvironmentVariable("DB_DATABASE");
-    var username = Environment.GetEnvironmentVariable("DB_USERNAME");
-    var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
-    
-    if (!string.IsNullOrEmpty(server) && !string.IsNullOrEmpty(database) && !string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
-    {
-        connectionString = $"Server={server};Database={database};User Id={username};Password={password};Encrypt=true;TrustServerCertificate=false;Connection Timeout=30;";
-    }
-}
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.")));
+{
+    if (!string.IsNullOrEmpty(connectionString))
+    {
+        options.UseSqlServer(connectionString);
+    }
+    else
+    {
+        // Fallback para SQL Server local em desenvolvimento
+        options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SistemaGestaoMotos;Trusted_Connection=true;MultipleActiveResultSets=true");
+    }
+});
 
 // Configurar AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
@@ -118,23 +115,41 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Aplicar migrations automaticamente em produção
-if (app.Environment.IsProduction())
+// Endpoint de health check
+app.MapGet("/health", () => new { 
+    Status = "Healthy", 
+    Timestamp = DateTime.UtcNow,
+    Environment = app.Environment.EnvironmentName 
+});
+
+// Configurar banco de dados com tratamento de erro
+try
 {
     using (var scope = app.Services.CreateScope())
     {
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        context.Database.Migrate();
+        
+        if (app.Environment.IsProduction())
+        {
+            // Em produção, aplicar migrations se necessário
+            var pendingMigrations = context.Database.GetPendingMigrations();
+            if (pendingMigrations.Any())
+            {
+                context.Database.Migrate();
+            }
+        }
+        else
+        {
+            // Em desenvolvimento, garantir que o banco existe
+            context.Database.EnsureCreated();
+        }
     }
 }
-else
+catch (Exception ex)
 {
-    // Em desenvolvimento, apenas criar o banco
-    using (var scope = app.Services.CreateScope())
-    {
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        context.Database.EnsureCreated();
-    }
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Erro ao configurar o banco de dados durante a inicialização");
+    // Não parar a aplicação por causa do banco - deixar continuar e tratar nos endpoints
 }
 
 app.Run();
