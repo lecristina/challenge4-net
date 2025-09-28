@@ -242,4 +242,35 @@ catch (Exception ex)
     // Não parar a aplicação por causa do banco - deixar continuar e tratar nos endpoints
 }
 
+// Endpoint para testar diretamente os dados dos usuários
+app.MapGet("/debug/usuarios", async (ApplicationDbContext context) => {
+    try 
+    {
+        var usuarios = await context.Usuarios.Take(5).ToListAsync();
+        return Results.Ok(new { 
+            Status = "Success",
+            Count = usuarios.Count,
+            Usuarios = usuarios.Select(u => new {
+                u.Id,
+                u.NomeFilial,
+                u.Email,
+                u.Cnpj,
+                u.Perfil,
+                u.DataCriacao
+            }),
+            Timestamp = DateTime.UtcNow
+        });
+    }
+    catch (Exception ex)
+    {
+        return Results.Ok(new { 
+            Status = "Error", 
+            Error = ex.Message,
+            InnerError = ex.InnerException?.Message,
+            StackTrace = ex.StackTrace?.Split('\n').Take(5),
+            Timestamp = DateTime.UtcNow 
+        });
+    }
+});
+
 app.Run();
