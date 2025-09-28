@@ -46,7 +46,7 @@ namespace challenge_3_net.Data
                 entity.Property(e => e.Cnpj).IsRequired().HasMaxLength(18);
                 entity.Property(e => e.Endereco).HasMaxLength(500);
                 entity.Property(e => e.Telefone).HasMaxLength(20);
-                entity.Property(e => e.Perfil).IsRequired().HasConversion<string>();
+                entity.Property(e => e.Perfil).IsRequired().HasConversion<int>();
                 entity.Property(e => e.DataCriacao).IsRequired();
                 entity.Property(e => e.DataAtualizacao).IsRequired();
 
@@ -83,7 +83,7 @@ namespace challenge_3_net.Data
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.MotoId).IsRequired();
                 entity.Property(e => e.UsuarioId).IsRequired();
-                entity.Property(e => e.TipoOperacao).IsRequired().HasConversion<string>();
+                entity.Property(e => e.TipoOperacao).IsRequired().HasConversion<int>();
                 entity.Property(e => e.Descricao).HasMaxLength(1000);
                 entity.Property(e => e.DataOperacao).IsRequired();
 
@@ -105,7 +105,7 @@ namespace challenge_3_net.Data
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.MotoId).IsRequired();
                 entity.Property(e => e.UsuarioId).IsRequired();
-                entity.Property(e => e.Status).IsRequired().HasConversion<string>();
+                entity.Property(e => e.Status).IsRequired().HasConversion<int>();
                 entity.Property(e => e.Descricao).HasMaxLength(500);
                 entity.Property(e => e.Area).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.DataStatus).IsRequired();
