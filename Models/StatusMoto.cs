@@ -71,68 +71,48 @@ namespace challenge_3_net.Models
     public enum StatusMotoEnum
     {
         /// <summary>
-        /// Moto disponível para uso
-        /// </summary>
-        DISPONIVEL,
-
-        /// <summary>
-        /// Moto em uso no momento
-        /// </summary>
-        EM_USO,
-
-        /// <summary>
-        /// Moto em manutenção
-        /// </summary>
-        MANUTENCAO,
-
-        /// <summary>
-        /// Moto indisponível
-        /// </summary>
-        INDISPONIVEL,
-
-        /// <summary>
         /// Moto com status pendente
         /// </summary>
-        PENDENTE,
+        PENDENTE = 0,
 
         /// <summary>
         /// Moto com reparo simples necessário
         /// </summary>
-        REPARO_SIMPLES,
+        REPARO_SIMPLES = 1,
 
         /// <summary>
         /// Moto com danos estruturais
         /// </summary>
-        DANOS_ESTRUTURAIS,
+        DANOS_ESTRUTURAIS = 2,
 
         /// <summary>
         /// Moto com motor defeituoso
         /// </summary>
-        MOTOR_DEFEITUOSO,
+        MOTOR_DEFEITUOSO = 3,
 
         /// <summary>
         /// Moto com manutenção agendada
         /// </summary>
-        MANUTENCAO_AGENDADA,
+        MANUTENCAO_AGENDADA = 4,
 
         /// <summary>
         /// Moto pronta para uso
         /// </summary>
-        PRONTA,
+        PRONTA = 5,
 
         /// <summary>
         /// Moto sem placa
         /// </summary>
-        SEM_PLACA,
+        SEM_PLACA = 6,
 
         /// <summary>
         /// Moto alugada
         /// </summary>
-        ALUGADA,
+        ALUGADA = 7,
 
         /// <summary>
         /// Moto aguardando aluguel
         /// </summary>
-        AGUARDANDO_ALUGUEL
+        AGUARDANDO_ALUGUEL = 8
     }
 }

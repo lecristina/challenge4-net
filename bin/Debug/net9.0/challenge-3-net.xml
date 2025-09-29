@@ -1061,26 +1061,6 @@
             Enum que define os possíveis status de uma moto
             </summary>
         </member>
-        <member name="F:challenge_3_net.Models.StatusMotoEnum.DISPONIVEL">
-            <summary>
-            Moto disponível para uso
-            </summary>
-        </member>
-        <member name="F:challenge_3_net.Models.StatusMotoEnum.EM_USO">
-            <summary>
-            Moto em uso no momento
-            </summary>
-        </member>
-        <member name="F:challenge_3_net.Models.StatusMotoEnum.MANUTENCAO">
-            <summary>
-            Moto em manutenção
-            </summary>
-        </member>
-        <member name="F:challenge_3_net.Models.StatusMotoEnum.INDISPONIVEL">
-            <summary>
-            Moto indisponível
-            </summary>
-        </member>
         <member name="F:challenge_3_net.Models.StatusMotoEnum.PENDENTE">
             <summary>
             Moto com status pendente

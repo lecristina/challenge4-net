@@ -118,7 +118,7 @@ namespace challenge_3_net.Data
                 entity.Property(e => e.MotoId).IsRequired().HasColumnName("moto_id");
                 entity.Property(e => e.UsuarioId).IsRequired().HasColumnName("usuario_id");
                 entity.Property(e => e.Status).IsRequired().HasConversion<string>().HasColumnName("status");
-                entity.Property(e => e.Descricao).HasMaxLength(500).HasColumnName("descricao");
+                entity.Ignore(e => e.Descricao); // Oracle não tem coluna descricao
                 entity.Property(e => e.Area).IsRequired().HasMaxLength(50).HasColumnName("area");
                 entity.Property(e => e.DataStatus).IsRequired().HasColumnName("data_criacao"); // Oracle usa data_criacao
 
