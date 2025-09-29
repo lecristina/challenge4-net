@@ -309,30 +309,6 @@
             Tabela de status das motos
             </summary>
         </member>
-        <member name="T:challenge_3_net.Migrations.InitialCreate">
-            <inheritdoc />
-        </member>
-        <member name="M:challenge_3_net.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:challenge_3_net.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:challenge_3_net.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:challenge_3_net.Migrations.SeedData">
-            <inheritdoc />
-        </member>
-        <member name="M:challenge_3_net.Migrations.SeedData.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:challenge_3_net.Migrations.SeedData.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:challenge_3_net.Migrations.SeedData.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
         <member name="T:challenge_3_net.Models.DTOs.PagedResultDto`1">
             <summary>
             DTO para resultado paginado

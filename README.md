@@ -9,62 +9,61 @@ O **TrackZone** é uma API RESTful desenvolvida em .NET 9 para gerenciamento com
 - **Gestão de Operações**: Registro de operações realizadas (Venda, Aluguel, Manutenção, Devolução)
 - **Gestão de Status**: Controle de estados das motos (Disponível, Alugada, Manutenção, Vendida)
 
-## 💼 Benefícios para o Negócio
+## 🎯 Objetivos Acadêmicos
 
-### Problemas Resolvidos:
-- **Controle Manual**: Elimina planilhas e controles manuais de motos
-- **Falta de Rastreabilidade**: Histórico completo de operações por moto
-- **Gestão de Status**: Visibilidade em tempo real do status de cada veículo
-- **Controle de Acesso**: Diferentes níveis de permissão por usuário
-
-### Melhorias Proporcionadas:
-- **Eficiência Operacional**: Redução de 70% no tempo de consultas
-- **Precisão de Dados**: Eliminação de erros manuais de digitação
-- **Relatórios Automáticos**: Dashboards e relatórios em tempo real
-- **Escalabilidade**: Suporte a crescimento do negócio sem retrabalho
-- **Integração**: API permite integração com outros sistemas
+### Conceitos .NET Demonstrados:
+- **API RESTful**: Implementação completa com verbos HTTP adequados
+- **Entity Framework Core**: ORM para acesso a dados com SQL Server
+- **Arquitetura em Camadas**: Controllers, Services, Repositories e DTOs
+- **Injeção de Dependência**: Padrão IoC implementado
+- **Validação de Dados**: Data Annotations e ModelState
+- **Documentação**: Swagger/OpenAPI configurado
+- **Paginação**: Implementação de paginação em todos os endpoints
+- **HATEOAS**: Links de navegação nos responses
+- **Tratamento de Erros**: Try-catch com logging estruturado
+- **Clean Architecture**: Separação clara de responsabilidades
 
 ## 👥 Integrantes
 
 - Leticia Cristina Dos Santos Passos RM: 555241
 - André Rogério Vieira Pavanela Altobelli Antunes RM: 554764
 - Enrico Figueiredo Del Guerra RM: 558604
-- **Instituição**: FIAP - DevOps Tools & Cloud Computing
+- **Instituição**: FIAP - .NET
 
 ## 🏗️ Arquitetura da Solução
 
-### Desenho da Arquitetura
+### Desenho da Arquitetura .NET
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   GitHub Repo   │ -> │ GitHub Actions  │ -> │ Azure App Svc   │
-│   (Source)      │    │   (CI/CD)       │    │  (Application)  │
+│   Controllers   │ -> │    Services     │ -> │  Repositories   │
+│   (API Layer)   │    │ (Business Logic)│    │  (Data Access)  │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
-                                                        │
-                                                        v
+         │                       │                       │
+         v                       v                       v
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│    Azure CLI    │ -> │  Resource Group │    │  Azure SQL DB   │
-│   (Deployment)  │    │  (Management)   │    │   (Database)    │
+│   DTOs/Models   │    │   AutoMapper    │    │ Entity Framework│
+│ (Data Transfer) │    │  (Object Map)   │    │   Core + SQL    │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
 ### Fluxo de Funcionamento:
 
-1. **Desenvolvimento**: Código versionado no GitHub
-2. **CI/CD**: GitHub Actions automatiza build e deploy
-3. **Infraestrutura**: Azure CLI cria recursos na nuvem
-4. **Aplicação**: App Service hospeda a API .NET
-5. **Dados**: Azure SQL Database armazena informações
-6. **Monitoramento**: Application Insights coleta telemetria
+1. **Controllers**: Recebem requisições HTTP e coordenam operações
+2. **Services**: Implementam regras de negócio e validações
+3. **Repositories**: Gerenciam acesso e persistência de dados
+4. **Entity Framework**: ORM para mapeamento objeto-relacional
+5. **DTOs**: Transferência de dados entre camadas
+6. **AutoMapper**: Mapeamento automático entre entidades e DTOs
 
 ### Justificativa Técnica:
 
 A arquitetura segue os princípios **SOLID** e **Clean Architecture**:
 
-- **Controllers**: Interface de entrada (API REST)
-- **Services**: Regras de negócio e validações
-- **Repositories**: Acesso e persistência de dados
-- **Models/DTOs**: Representação e transferência de dados
+- **Separação de Responsabilidades**: Cada camada tem uma função específica
+- **Inversão de Dependência**: Services dependem de abstrações (interfaces)
+- **Single Responsibility**: Cada classe tem uma única responsabilidade
+- **Open/Closed**: Aberto para extensão, fechado para modificação
 
 ### Estrutura do Projeto
 
@@ -87,78 +86,157 @@ challenge-3-net/
 
 ## 🚀 Tecnologias Utilizadas
 
-### Backend:
+### Framework e Linguagem:
 - **.NET 9** - Framework principal
+- **C# 12** - Linguagem de programação
+- **ASP.NET Core Web API** - Framework para APIs REST
+
+### Acesso a Dados:
 - **Entity Framework Core 9** - ORM para acesso a dados
-- **Azure SQL Database** - Banco de dados em nuvem (PaaS)
+- **SQL Server** - Banco de dados relacional
+- **Code First** - Migrations para criação do banco
+
+### Padrões e Bibliotecas:
 - **AutoMapper** - Mapeamento de objetos
-- **BCrypt** - Criptografia de senhas
-
-### Cloud & DevOps:
-- **Azure App Service** - Hospedagem da aplicação
-- **Azure SQL Database** - Banco de dados gerenciado
-- **Azure CLI** - Criação de recursos via script
-- **GitHub Actions** - CI/CD automatizado
-- **Application Insights** - Monitoramento e telemetria
-
-### Documentação:
+- **BCrypt.Net-Next** - Criptografia de senhas
+- **FluentValidation** - Validação de dados
 - **Swagger/OpenAPI** - Documentação interativa da API
-- **XML Documentation** - Comentários de código estruturados
 
-## 🚀 Passo a Passo para Deploy
+### Arquitetura:
+- **Repository Pattern** - Padrão de acesso a dados
+- **Dependency Injection** - Inversão de controle
+- **DTO Pattern** - Transferência de dados
+- **Clean Architecture** - Separação de responsabilidades
+
+## 🚀 Como Executar o Projeto
 
 ### Pré-requisitos
 
-1. **Azure CLI** instalado e configurado
-2. **Git** instalado
-3. **Conta Azure** ativa
-4. **GitHub** account
+1. **.NET 9 SDK** instalado
+2. **SQL Server** (LocalDB, Express ou Developer)
+3. **Visual Studio 2022** (recomendado) ou **Visual Studio Code**
+4. **Git** instalado
+
+### 🔧 Configuração do Visual Studio 2022
+
+Para uma experiência otimizada, configure o Visual Studio:
+
+1. **Instalar Extensões**:
+   - Entity Framework Core Tools
+   - Swagger/OpenAPI Tools
+
+2. **Configurar Connection String**:
+   - Abra `appsettings.json`
+   - Verifique se a connection string está correta:
+   ```json
+   {
+     "ConnectionStrings": {
+       "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=SistemaGestaoMotos;Trusted_Connection=true;MultipleActiveResultSets=true"
+     }
+   }
+   ```
+
+3. **Configurar Projeto de Inicialização**:
+   - Clique com botão direito no projeto `challenge-3-net`
+   - Selecione "Set as Startup Project"
 
 ### 1. Clone do Repositório
 
 ```bash
-git clone https://github.com/andrealtobelli/challenge3-devops-net.git
-cd challenge3-devops-net
+git clone https://github.com/lecristina/challenge3-net.git
+cd challenge3-net
 ```
 
-### 2. Login no Azure
+### 2. Restaurar Pacotes NuGet
 
 ```bash
-az login
+dotnet restore
 ```
 
-### 3. Execução do Script de Deploy
+### 3. Configurar Banco de Dados
 
 ```bash
-# No Windows (PowerShell/Git Bash)
-bash script-devops.sh
+# Criar as migrações
+dotnet ef migrations add InitialCreate
 
-# No Linux/Mac
-chmod +x script-devops.sh
-./script-devops.sh
+# Aplicar as migrações ao banco
+dotnet ef database update
 ```
 
-### 4. Aguardar Deploy Automático
+### 4. Executar a Aplicação
 
-O script irá:
-- Criar Resource Group
-- Criar Azure SQL Server e Database
-- Criar App Service Plan e App Service
-- Configurar Connection String
-- Executar script SQL para criar tabelas
-- Inserir dados de exemplo
-- Configurar GitHub Actions para CI/CD
+#### Opção A: Via Terminal
+```bash
+dotnet run
+```
 
-### 5. Verificar Deploy
+#### Opção B: Via Visual Studio 2022
+1. Abra o arquivo `challenge-3-net.sln` no Visual Studio
+2. Configure o projeto `challenge-3-net` como projeto de inicialização
+3. Pressione **F5** ou clique em **Iniciar** (botão verde)
+4. O Visual Studio irá:
+   - Compilar o projeto automaticamente
+   - Iniciar a aplicação
+   - Abrir o navegador com o Swagger
 
-Após execução do script, acesse:
-- **API**: https://trackzone-net-app.azurewebsites.net
-- **Health Check**: https://trackzone-net-app.azurewebsites.net/health
-- **Swagger**: https://trackzone-net-app.azurewebsites.net/swagger
+#### Opção C: Via Visual Studio Code
+1. Abra a pasta do projeto no VS Code
+2. Pressione **Ctrl+Shift+P** e digite "Tasks: Run Task"
+3. Selecione "build" para compilar
+4. Pressione **F5** para executar com debug
+5. Ou use o terminal integrado: `dotnet run`
+
+### 5. Acessar a API
+
+Após execução, acesse:
+- **API**: https://localhost:5001 ou http://localhost:5000
+- **Swagger**: https://localhost:5001/ ou http://localhost:5000/ (raiz)
+- **Health Check**: https://localhost:5001/health
+
+## 🔍 Debugging e Troubleshooting
+
+### Visual Studio 2022 - Dicas de Debug
+
+1. **Breakpoints**:
+   - Coloque breakpoints nos Controllers para debugar requisições
+   - Use F10 (Step Over) e F11 (Step Into) para navegar pelo código
+
+2. **Output Window**:
+   - Visualize logs em tempo real: `View > Output > Show output from: Web Server`
+
+3. **Database Explorer**:
+   - Conecte ao banco via `View > SQL Server Object Explorer`
+   - Verifique se as tabelas foram criadas corretamente
+
+4. **Package Manager Console**:
+   - Use para comandos EF Core: `Add-Migration`, `Update-Database`
+
+### Problemas Comuns
+
+**Erro de Connection String**:
+```bash
+# Verifique se o SQL Server LocalDB está rodando
+sqllocaldb info
+sqllocaldb start mssqllocaldb
+```
+
+**Erro de Migrations**:
+```bash
+# Remova e recrie as migrations
+dotnet ef migrations remove
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+```
+
+**Porta já em uso**:
+```bash
+# Use uma porta diferente
+dotnet run --urls "https://localhost:5002;http://localhost:5001"
+```
 
 ## 🧪 Testes da Aplicação via Swagger
 
-**Acesse**: https://trackzone-net-app.azurewebsites.net/swagger
+**Acesse**: https://localhost:5001/ ou http://localhost:5000/ (raiz)
 
 ### 1. Health Check
 
@@ -185,168 +263,432 @@ GET /health
 
 ---
 
-## 👥 CRUD COMPLETO - USUÁRIOS
+## 📚 DOCUMENTAÇÃO COMPLETA DE ENDPOINTS
 
-### 📋 Listar Usuários (GET /api/usuarios)
+### 🔧 **ENDPOINTS DE SISTEMA**
+
+#### Health Check
+```http
+GET /health
 ```
+**Descrição**: Verifica o status da aplicação e conectividade com o banco de dados.
+
+#### Health Check do Banco
+```http
+GET /health/database
+```
+**Descrição**: Verifica especificamente a conectividade e migrações do banco de dados.
+
+#### Dados do Sistema
+```http
+GET /admin/data
+```
+**Descrição**: Retorna contadores de registros em cada tabela do sistema.
+
+#### Debug Usuários
+```http
+GET /debug/usuarios
+```
+**Descrição**: Endpoint de debug para verificar dados de usuários (apenas desenvolvimento).
+
+#### Weather Forecast (Template)
+```http
+GET /WeatherForecast
+```
+**Descrição**: Endpoint de exemplo do template .NET (pode ser removido em produção).
+
+---
+
+### 👥 **ENDPOINTS DE USUÁRIOS** (`/api/usuarios`)
+
+#### 1. Listar Usuários
+```http
 GET /api/usuarios?pageNumber=1&pageSize=10
 ```
+**Parâmetros**:
+- `pageNumber` (opcional): Número da página (padrão: 1)
+- `pageSize` (opcional): Tamanho da página (padrão: 10, máximo: 100)
 
-### ➕ Criar Usuário (POST /api/usuarios)
+**Resposta**:
 ```json
 {
-  "nomeFilial": "Filial Teste Nova",
-  "email": "teste.novo@empresa.com",
+  "items": [
+    {
+      "id": 1,
+      "nomeFilial": "Empresa Exemplo",
+      "email": "contato@empresa.com",
+      "cnpj": "12.345.678/0001-90",
+      "endereco": "Rua das Flores, 123",
+      "telefone": "(11) 99999-9999",
+      "perfil": 0,
+      "dataCriacao": "2025-01-16T10:00:00Z",
+      "dataAtualizacao": "2025-01-16T10:00:00Z",
+      "links": []
+    }
+  ],
+  "pageNumber": 1,
+  "pageSize": 10,
+  "totalItems": 1,
+  "totalPages": 1,
+  "hasPreviousPage": false,
+  "hasNextPage": false,
+  "links": []
+}
+```
+
+#### 2. Buscar Usuário por ID
+```http
+GET /api/usuarios/{id}
+```
+**Parâmetros**:
+- `id`: ID do usuário (long)
+
+**Resposta** (200):
+```json
+{
+  "id": 1,
+  "nomeFilial": "Empresa Exemplo",
+  "email": "contato@empresa.com",
+  "cnpj": "12.345.678/0001-90",
+  "endereco": "Rua das Flores, 123",
+  "telefone": "(11) 99999-9999",
+  "perfil": 0,
+  "dataCriacao": "2025-01-16T10:00:00Z",
+  "dataAtualizacao": "2025-01-16T10:00:00Z",
+  "links": []
+}
+```
+
+#### 3. Criar Usuário
+```http
+POST /api/usuarios
+Content-Type: application/json
+```
+**Body**:
+```json
+{
+  "nomeFilial": "Nova Empresa",
+  "email": "novo@empresa.com",
   "senha": "123456",
-  "cnpj": "98765432000111",
-  "endereco": "Rua Nova, 500, São Paulo - SP",
-  "telefone": "(11) 98765-4321",
+  "cnpj": "98.765.432/0001-10",
+  "endereco": "Av. Principal, 456",
+  "telefone": "(11) 88888-8888",
   "perfil": 1
 }
 ```
 
-### 🔍 Buscar Usuário por ID (GET /api/usuarios/{id})
-```
-GET /api/usuarios/1
-```
-
-### ✏️ Atualizar Usuário (PUT /api/usuarios/{id})
+**Resposta** (201):
 ```json
 {
-  "nomeFilial": "Filial Teste Atualizada",
-  "email": "teste.atualizado@empresa.com",
-  "cnpj": "98765432000111",
-  "endereco": "Rua Atualizada, 1000, São Paulo - SP",
-  "telefone": "(11) 91234-5678",
+  "id": 2,
+  "nomeFilial": "Nova Empresa",
+  "email": "novo@empresa.com",
+  "cnpj": "98.765.432/0001-10",
+  "endereco": "Av. Principal, 456",
+  "telefone": "(11) 88888-8888",
+  "perfil": 1,
+  "dataCriacao": "2025-01-16T10:30:00Z",
+  "dataAtualizacao": "2025-01-16T10:30:00Z",
+  "links": []
+}
+```
+
+#### 4. Atualizar Usuário
+```http
+PUT /api/usuarios/{id}
+Content-Type: application/json
+```
+**Body**:
+```json
+{
+  "nomeFilial": "Empresa Atualizada",
+  "email": "atualizado@empresa.com",
+  "cnpj": "98.765.432/0001-10",
+  "endereco": "Av. Principal, 456 - Atualizada",
+  "telefone": "(11) 77777-7777",
   "perfil": 2
 }
 ```
 
-### 🗑️ Deletar Usuário (DELETE /api/usuarios/{id})
+#### 5. Deletar Usuário
+```http
+DELETE /api/usuarios/{id}
 ```
-DELETE /api/usuarios/4
-```
+**Resposta** (204): No Content
 
 ---
 
-## 🏍️ CRUD COMPLETO - MOTOS
+### 🏍️ **ENDPOINTS DE MOTOS** (`/api/motos`)
 
-### 📋 Listar Motos (GET /api/motos)
-```
+#### 1. Listar Motos
+```http
 GET /api/motos?pageNumber=1&pageSize=10
 ```
 
-### ➕ Criar Moto (POST /api/motos)
+#### 2. Buscar Moto por ID
+```http
+GET /api/motos/{id}
+```
+
+#### 3. Buscar Moto por Placa
+```http
+GET /api/motos/placa/{placa}
+```
+**Exemplo**: `GET /api/motos/placa/ABC1234`
+
+#### 4. Buscar Moto por Chassi
+```http
+GET /api/motos/chassi/{chassi}
+```
+**Exemplo**: `GET /api/motos/chassi/9BWHE21JX24067890`
+
+#### 5. Listar Motos por Usuário
+```http
+GET /api/motos/usuario/{usuarioId}?pageNumber=1&pageSize=10
+```
+
+#### 6. Criar Moto
+```http
+POST /api/motos
+Content-Type: application/json
+```
+**Body**:
 ```json
 {
   "placa": "XYZ5678",
   "chassi": "9BWHE21JX24067890",
-  "motor": "Yamaha MT-09",
+  "motor": "Yamaha MT-09 900cc",
+  "usuarioId": 1
+}
+```
+
+**Resposta** (201):
+```json
+{
+  "id": 1,
+  "placa": "XYZ5678",
+  "chassi": "9BWHE21JX24067890",
+  "motor": "Yamaha MT-09 900cc",
   "usuarioId": 1,
-  "status": 0
+  "nomeFilial": "Empresa Exemplo",
+  "dataCriacao": "2025-01-16T11:00:00Z",
+  "dataAtualizacao": "2025-01-16T11:00:00Z",
+  "links": []
 }
 ```
 
-### 🔍 Buscar Moto por ID (GET /api/motos/{id})
+#### 7. Atualizar Moto
+```http
+PUT /api/motos/{id}
+Content-Type: application/json
 ```
-GET /api/motos/1
-```
-
-### ✏️ Atualizar Moto (PUT /api/motos/{id})
+**Body**:
 ```json
 {
   "placa": "XYZ5678",
   "chassi": "9BWHE21JX24067890",
-  "motor": "Yamaha MT-09 Atualizada",
-  "usuarioId": 2,
-  "status": 1
+  "motor": "Yamaha MT-09 900cc - Atualizada",
+  "usuarioId": 2
 }
 ```
 
-### 🗑️ Deletar Moto (DELETE /api/motos/{id})
-```
-DELETE /api/motos/4
+#### 8. Deletar Moto
+```http
+DELETE /api/motos/{id}
 ```
 
 ---
 
-## ⚙️ CRUD COMPLETO - OPERAÇÕES
+### ⚙️ **ENDPOINTS DE OPERAÇÕES** (`/api/operacoes`)
 
-### 📋 Listar Operações (GET /api/operacoes)
-```
+#### 1. Listar Operações
+```http
 GET /api/operacoes?pageNumber=1&pageSize=10
 ```
 
-### ➕ Criar Operação (POST /api/operacoes)
+#### 2. Buscar Operação por ID
+```http
+GET /api/operacoes/{id}
+```
+
+#### 3. Criar Operação
+```http
+POST /api/operacoes
+Content-Type: application/json
+```
+**Body**:
 ```json
 {
-  "tipoOperacao": 1,
-  "descricao": "Aluguel da moto para cliente empresarial - Período de 30 dias",
+  "tipoOperacao": 0,
+  "descricao": "Entrega da moto para cliente empresarial - Período de 30 dias",
   "motoId": 1,
   "usuarioId": 1
 }
 ```
 
-### 🔍 Buscar Operação por ID (GET /api/operacoes/{id})
-```
-GET /api/operacoes/1
-```
-
-### ✏️ Atualizar Operação (PUT /api/operacoes/{id})
+**Resposta** (201):
 ```json
 {
-  "tipoOperacao": 3,
-  "descricao": "Operação atualizada - Devolução da moto após aluguel",
+  "id": 1,
+  "tipoOperacao": 0,
+  "descricao": "Entrega da moto para cliente empresarial - Período de 30 dias",
+  "dataOperacao": "2025-01-16T12:00:00Z",
+  "motoId": 1,
+  "placaMoto": "XYZ5678",
+  "usuarioId": 1,
+  "nomeUsuario": "Empresa Exemplo",
+  "links": []
+}
+```
+
+#### 4. Atualizar Operação
+```http
+PUT /api/operacoes/{id}
+Content-Type: application/json
+```
+**Body**:
+```json
+{
+  "tipoOperacao": 1,
+  "descricao": "Operação atualizada - Coleta da moto após entrega",
   "motoId": 1,
   "usuarioId": 2
 }
 ```
 
-### 🗑️ Deletar Operação (DELETE /api/operacoes/{id})
-```
-DELETE /api/operacoes/4
+#### 5. Deletar Operação
+```http
+DELETE /api/operacoes/{id}
 ```
 
 ---
 
-## 📊 CRUD COMPLETO - STATUS MOTOS
+### 📊 **ENDPOINTS DE STATUS MOTOS** (`/api/statusmotos`)
 
-### 📋 Listar Status Motos (GET /api/statusmotos)
-```
+#### 1. Listar Status
+```http
 GET /api/statusmotos?pageNumber=1&pageSize=10
 ```
 
-### ➕ Criar Status Moto (POST /api/statusmotos)
+#### 2. Buscar Status por ID
+```http
+GET /api/statusmotos/{id}
+```
+
+#### 3. Buscar Status Atual da Moto
+```http
+GET /api/statusmotos/moto/{motoId}/atual
+```
+
+#### 4. Listar Histórico de Status da Moto
+```http
+GET /api/statusmotos/moto/{motoId}/historico?pageNumber=1&pageSize=10
+```
+
+#### 5. Listar Status por Tipo
+```http
+GET /api/statusmotos/tipo/{status}?pageNumber=1&pageSize=10
+```
+**Exemplo**: `GET /api/statusmotos/tipo/DISPONIVEL`
+
+#### 6. Criar Status
+```http
+POST /api/statusmotos
+Content-Type: application/json
+```
+**Body**:
 ```json
 {
-  "status": 1,
-  "descricao": "Moto em manutenção preventiva - Revisão dos 10.000km",
-  "area": "Oficina Principal - Setor A",
+  "status": 0,
+  "descricao": "Moto disponível para uso - Revisão completa realizada",
+  "area": "Pátio Principal - Setor A",
   "motoId": 1,
   "usuarioId": 1
 }
 ```
 
-### 🔍 Buscar Status Moto por ID (GET /api/statusmotos/{id})
-```
-GET /api/statusmotos/1
+**Resposta** (201):
+```json
+{
+  "id": 1,
+  "status": 0,
+  "descricao": "Moto disponível para uso - Revisão completa realizada",
+  "area": "Pátio Principal - Setor A",
+  "dataStatus": "2025-01-16T13:00:00Z",
+  "motoId": 1,
+  "placaMoto": "XYZ5678",
+  "usuarioId": 1,
+  "nomeUsuario": "Empresa Exemplo",
+  "links": []
+}
 ```
 
-### ✏️ Atualizar Status Moto (PUT /api/statusmotos/{id})
+#### 7. Atualizar Status
+```http
+PUT /api/statusmotos/{id}
+Content-Type: application/json
+```
+**Body**:
 ```json
 {
   "status": 2,
-  "descricao": "Status atualizado - Manutenção concluída, moto disponível",
-  "area": "Pátio de Disponíveis - Setor B",
+  "descricao": "Status atualizado - Moto em manutenção preventiva",
+  "area": "Oficina - Setor B",
   "motoId": 1,
   "usuarioId": 2
 }
 ```
 
-### 🗑️ Deletar Status Moto (DELETE /api/statusmotos/{id})
+#### 8. Deletar Status
+```http
+DELETE /api/statusmotos/{id}
 ```
-DELETE /api/statusmotos/4
-```
+
+---
+
+## 📋 **CÓDIGOS DE STATUS HTTP**
+
+| Código | Descrição | Uso |
+|--------|-----------|-----|
+| 200 | OK | Operação realizada com sucesso |
+| 201 | Created | Recurso criado com sucesso |
+| 204 | No Content | Operação realizada sem retorno (DELETE) |
+| 400 | Bad Request | Dados inválidos ou parâmetros incorretos |
+| 404 | Not Found | Recurso não encontrado |
+| 409 | Conflict | Conflito (ex: email/CNPJ duplicado) |
+| 500 | Internal Server Error | Erro interno do servidor |
+
+---
+
+## 🔗 **VALORES DE ENUM**
+
+### Perfil Usuario:
+- `0` = ADMIN
+- `1` = GERENTE  
+- `2` = OPERADOR
+
+### Status Moto:
+- `0` = DISPONIVEL
+- `1` = EM_USO
+- `2` = MANUTENCAO
+- `3` = INDISPONIVEL
+- `4` = PENDENTE
+- `5` = REPARO_SIMPLES
+- `6` = DANOS_ESTRUTURAIS
+- `7` = MOTOR_DEFEITUOSO
+- `8` = MANUTENCAO_AGENDADA
+- `9` = PRONTA
+- `10` = SEM_PLACA
+- `11` = ALUGADA
+- `12` = AGUARDANDO_ALUGUEL
+
+### Tipo Operação:
+- `0` = ENTREGA
+- `1` = COLETA
+- `2` = MANUTENCAO
+- `3` = TRANSFERENCIA
+- `4` = CHECK_IN
+- `5` = CHECK_OUT
 
 ---
 
@@ -427,70 +769,49 @@ SELECT * FROM StatusMotos;
 
 ## � Links Importantes
 
-### Repositório e Deploy:
-- **GitHub Repository**: https://github.com/andrealtobelli/challenge3-devops-net
-- **API em Produção**: https://trackzone-net-app.azurewebsites.net
-- **Swagger Documentation**: https://trackzone-net-app.azurewebsites.net/swagger
-- **Health Check**: https://trackzone-net-app.azurewebsites.net/health
+### Repositório e Execução Local:
+- **GitHub Repository**: https://github.com/lecristina/challenge3-net
+- **Swagger Local**: https://localhost:5001/swagger
+- **Health Check Local**: https://localhost:5001/health
 
-### Recursos Azure Criados:
-- **Resource Group**: trackzone-rg
-- **App Service**: trackzone-net-app
-- **Azure SQL Server**: trackzone-sql-server
-- **Azure SQL Database**: trackzone-db
+## 📁 Estrutura de Arquivos
 
-## 📁 Arquivos de Script
+### Arquivos Principais:
+- `Program.cs` - Configuração da aplicação e injeção de dependência
+- `appsettings.json` - Configurações da aplicação
+- `challenge-3-net.csproj` - Arquivo de projeto .NET
 
-### Scripts de Deploy:
-- `script-devops.sh` - Script principal de deploy Azure
+### Scripts e Testes:
+- `teste_automatico.ps1` - Script PowerShell para testes automatizados
 - `script_bd.sql` - DDL completo do banco de dados
-- `.github/workflows/main_trackzone-net-app.yml` - GitHub Actions CI/CD
-
-
-## 🎥 Demonstração em Vídeo
-
-O vídeo demonstrativo inclui:
-
-1. **Clone do repositório** do GitHub
-2. **Execução do script-devops.sh** para deploy completo
-3. **Criação e configuração** dos recursos Azure
-4. **Demonstração completa do CRUD** de todas as entidades:
-   - Usuários: Create, Read, Update, Delete
-   - Motos: Create, Read, Update, Delete
-   - Operações: Create, Read, Update, Delete
-   - Status Motos: Create, Read, Update, Delete
-5. **Validação no banco de dados** de cada operação CRUD
-6. **Integração completa** entre App e Database funcionando 100%
-
-### Link do Vídeo:
-**YouTube**: 
 
 ## 📋 Checklist de Entrega
 
-- ✅ Descrição da solução completa
-- ✅ Benefícios para o negócio documentados
-- ✅ Banco de dados Azure SQL (PaaS) configurado
-- ✅ CRUD completo implementado em todas as entidades
-- ✅ Dados reais inseridos e manipulados
-- ✅ Código-fonte publicado no GitHub
-- ✅ Recursos criados via Azure CLI
-- ✅ Scripts de build e deploy fornecidos
-- ✅ README.md com passo a passo completo
-- ✅ Desenho da arquitetura documentado
-- ✅ DDL das tabelas em arquivo separado (script_bd.sql)
-- ✅ Exemplos de teste JSON documentados
+- ✅ API RESTful implementada em .NET 9
+- ✅ Mínimo 3 entidades principais (Usuários, Motos, Operações, Status)
+- ✅ Endpoints CRUD completos com boas práticas REST
+- ✅ Paginação implementada em todos os endpoints
+- ✅ HATEOAS implementado
+- ✅ Status codes adequados (200, 201, 400, 404, 409, 500)
+- ✅ Swagger/OpenAPI configurado com documentação completa
+- ✅ Validação de dados com Data Annotations
+- ✅ Arquitetura em camadas (Controllers, Services, Repositories)
+- ✅ Injeção de dependência implementada
+- ✅ Entity Framework Core com Code First
+- ✅ DTOs para transferência de dados
+- ✅ Tratamento de erros e logging
+- ✅ README.md completo com exemplos de uso
 
-## 🏆 Resultados Esperados
+## 🏆 Resultados Alcançados
 
-Após seguir este README, você terá:
+Este projeto demonstra:
 
-1. **Aplicação funcional** rodando no Azure App Service
-2. **Banco de dados Azure SQL** com dados de exemplo
-3. **API REST completa** com CRUD de todas as entidades
-4. **Documentação Swagger** acessível online
-5. **CI/CD configurado** via GitHub Actions
-6. **Monitoramento ativo** via Application Insights
+1. **Domínio do .NET 9** - Uso das funcionalidades mais recentes
+2. **Arquitetura Limpa** - Separação clara de responsabilidades
+3. **Boas Práticas REST** - Implementação correta dos verbos HTTP
+4. **Padrões de Design** - Repository, DTO, Dependency Injection
+5. **Documentação Completa** - Swagger com exemplos detalhados
+6. **Código Limpo** - Estrutura organizada e bem comentada
 
-
-**Desenvolvido para FIAP - DevOps Tools & Cloud Computing**  
+**Desenvolvido para FIAP - Advanced Business Development with .NET**  
 **Turma**: 3º Sprint - 2025
