@@ -243,7 +243,9 @@ Este projeto está sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para d
 
 ## 👥 Equipe
 
-- **André Altobelli** - Desenvolvimento e DevOps
+- **Leticia Cristina Dos Santos Passos RM**: 555241
+- **André Rogério Vieira Pavanela Altobelli Antunes RM**: 554764
+- **Enrico Figueiredo Del Guerra RM**: 558604
 - **FIAP** - Orientação acadêmica
 
 ---
