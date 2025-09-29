@@ -22,12 +22,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     if (!string.IsNullOrEmpty(connectionString))
     {
-        options.UseSqlServer(connectionString);
+        options.UseOracle(connectionString);
     }
     else
     {
-        // Fallback para SQL Server local em desenvolvimento
-        options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SistemaGestaoMotos;Trusted_Connection=true;MultipleActiveResultSets=true");
+        // Fallback para Oracle FIAP em desenvolvimento
+        options.UseOracle("Data Source=oracle.fiap.com.br:1521/ORCL;User Id=rm555241;Password=230205;Connection Timeout=30;");
     }
 });
 

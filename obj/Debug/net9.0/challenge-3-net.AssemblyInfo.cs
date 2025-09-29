@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("challenge-3-net")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f74d8fecd25b746f1ea4fe9738e0f9162df1e5fe")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+62c39b4879c205181995113b4c3a95266cef1d68")]
 [assembly: System.Reflection.AssemblyProductAttribute("challenge-3-net")]
 [assembly: System.Reflection.AssemblyTitleAttribute("challenge-3-net")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -35,7 +35,9 @@ namespace challenge_3_net.Repositories
                 query = query.Where(u => u.Id != excludeId.Value);
             }
 
-            return await query.AnyAsync();
+            // Usar CountAsync() em vez de AnyAsync() para compatibilidade com Oracle
+            var count = await query.CountAsync();
+            return count > 0;
         }
 
         public async Task<bool> CnpjExistsAsync(string cnpj, long? excludeId = null)
@@ -47,7 +49,9 @@ namespace challenge_3_net.Repositories
                 query = query.Where(u => u.Id != excludeId.Value);
             }
 
-            return await query.AnyAsync();
+            // Usar CountAsync() em vez de AnyAsync() para compatibilidade com Oracle
+            var count = await query.CountAsync();
+            return count > 0;
         }
 
         public async Task<(IEnumerable<Usuario> Items, long TotalCount)> GetPagedAsync(int pageNumber, int pageSize)

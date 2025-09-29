@@ -10,6 +10,54 @@
     "version": "v1"
   },
   "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "challenge-3-net"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/health/database": {
+      "get": {
+        "tags": [
+          "challenge-3-net"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/admin/data": {
+      "get": {
+        "tags": [
+          "challenge-3-net"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/debug/usuarios": {
+      "get": {
+        "tags": [
+          "challenge-3-net"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Motos": {
       "get": {
         "tags": [

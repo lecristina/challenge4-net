@@ -37,7 +37,9 @@ namespace challenge_3_net.Repositories
                 query = query.Where(m => m.Id != excludeId.Value);
             }
 
-            return await query.AnyAsync();
+            // Usar CountAsync() em vez de AnyAsync() para compatibilidade com Oracle
+            var count = await query.CountAsync();
+            return count > 0;
         }
 
         public async Task<bool> ChassiExistsAsync(string chassi, long? excludeId = null)
@@ -49,7 +51,9 @@ namespace challenge_3_net.Repositories
                 query = query.Where(m => m.Id != excludeId.Value);
             }
 
-            return await query.AnyAsync();
+            // Usar CountAsync() em vez de AnyAsync() para compatibilidade com Oracle
+            var count = await query.CountAsync();
+            return count > 0;
         }
 
         public async Task<IEnumerable<Moto>> GetByUsuarioIdAsync(long usuarioId)

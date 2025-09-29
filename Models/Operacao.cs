@@ -64,33 +64,13 @@ namespace challenge_3_net.Models
     public enum TipoOperacao
     {
         /// <summary>
-        /// Operação de entrega da moto
-        /// </summary>
-        ENTREGA,
-
-        /// <summary>
-        /// Operação de coleta da moto
-        /// </summary>
-        COLETA,
-
-        /// <summary>
-        /// Operação de manutenção da moto
-        /// </summary>
-        MANUTENCAO,
-
-        /// <summary>
-        /// Operação de transferência da moto
-        /// </summary>
-        TRANSFERENCIA,
-
-        /// <summary>
         /// Check-in da moto
         /// </summary>
-        CHECK_IN,
+        CHECK_IN = 0,
 
         /// <summary>
         /// Check-out da moto
         /// </summary>
-        CHECK_OUT
+        CHECK_OUT = 1
     }
 }

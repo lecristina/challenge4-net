@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using challenge_3_net.Models;
+using Oracle.EntityFrameworkCore;
 
 namespace challenge_3_net.Data
 {
@@ -36,35 +37,42 @@ namespace challenge_3_net.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configuração da entidade Usuario
+            // Configurar Oracle para usar aspas duplas (case-sensitive)
+            modelBuilder.HasDefaultSchema(null);
+
+            // Configuração da entidade Usuario para Oracle (conforme script)
             modelBuilder.Entity<Usuario>(entity =>
             {
+                entity.ToTable("usuarios");
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.NomeFilial).IsRequired().HasMaxLength(255);
-                entity.Property(e => e.Email).IsRequired().HasMaxLength(255);
-                entity.Property(e => e.SenhaHash).IsRequired().HasMaxLength(255);
-                entity.Property(e => e.Cnpj).IsRequired().HasMaxLength(18);
-                entity.Property(e => e.Endereco).HasMaxLength(500);
-                entity.Property(e => e.Telefone).HasMaxLength(20);
-                entity.Property(e => e.Perfil).IsRequired().HasConversion<int>();
-                entity.Property(e => e.DataCriacao).IsRequired();
-                entity.Property(e => e.DataAtualizacao).IsRequired();
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.NomeFilial).IsRequired().HasMaxLength(100).HasColumnName("nome_filial");
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(255).HasColumnName("email");
+                entity.Property(e => e.SenhaHash).IsRequired().HasMaxLength(255).HasColumnName("senha_hash");
+                entity.Property(e => e.Cnpj).IsRequired().HasMaxLength(18).HasColumnName("cnpj");
+                entity.Property(e => e.Endereco).HasMaxLength(255).HasColumnName("endereco");
+                entity.Property(e => e.Telefone).HasMaxLength(20).HasColumnName("telefone");
+                entity.Property(e => e.Perfil).IsRequired().HasConversion<string>().HasColumnName("perfil");
+                entity.Property(e => e.DataCriacao).IsRequired().HasColumnName("data_criacao");
+                entity.Ignore(e => e.DataAtualizacao); // Oracle só tem data_criacao
 
                 // Índices únicos
                 entity.HasIndex(e => e.Email).IsUnique();
                 entity.HasIndex(e => e.Cnpj).IsUnique();
             });
 
-            // Configuração da entidade Moto
+            // Configuração da entidade Moto para Oracle (conforme script)
             modelBuilder.Entity<Moto>(entity =>
             {
+                entity.ToTable("motos");
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Placa).IsRequired().HasMaxLength(10);
-                entity.Property(e => e.Chassi).IsRequired().HasMaxLength(17);
-                entity.Property(e => e.Motor).HasMaxLength(100);
-                entity.Property(e => e.UsuarioId).IsRequired();
-                entity.Property(e => e.DataCriacao).IsRequired();
-                entity.Property(e => e.DataAtualizacao).IsRequired();
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Placa).IsRequired().HasMaxLength(10).HasColumnName("placa");
+                entity.Property(e => e.Chassi).IsRequired().HasMaxLength(50).HasColumnName("chassi");
+                entity.Property(e => e.Motor).HasMaxLength(50).HasColumnName("motor");
+                entity.Property(e => e.UsuarioId).IsRequired().HasColumnName("usuario_id");
+                entity.Property(e => e.DataCriacao).IsRequired().HasColumnName("data_criacao");
+                entity.Ignore(e => e.DataAtualizacao); // Oracle só tem data_criacao
 
                 // Índices únicos
                 entity.HasIndex(e => e.Placa).IsUnique();
@@ -77,15 +85,17 @@ namespace challenge_3_net.Data
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // Configuração da entidade Operacao
+            // Configuração da entidade Operacao para Oracle (conforme script)
             modelBuilder.Entity<Operacao>(entity =>
             {
+                entity.ToTable("operacoes");
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.MotoId).IsRequired();
-                entity.Property(e => e.UsuarioId).IsRequired();
-                entity.Property(e => e.TipoOperacao).IsRequired().HasConversion<int>();
-                entity.Property(e => e.Descricao).HasMaxLength(1000);
-                entity.Property(e => e.DataOperacao).IsRequired();
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.MotoId).IsRequired().HasColumnName("moto_id");
+                entity.Property(e => e.UsuarioId).IsRequired().HasColumnName("usuario_id");
+                entity.Property(e => e.TipoOperacao).IsRequired().HasConversion<string>().HasColumnName("tipo_operacao");
+                entity.Property(e => e.Descricao).HasColumnName("observacoes"); // Oracle usa observacoes
+                entity.Property(e => e.DataOperacao).IsRequired().HasColumnName("data_criacao"); // Oracle usa data_criacao
 
                 // Relacionamentos
                 entity.HasOne(e => e.Moto)
@@ -99,16 +109,18 @@ namespace challenge_3_net.Data
                       .OnDelete(DeleteBehavior.NoAction);
             });
 
-            // Configuração da entidade StatusMoto
+            // Configuração da entidade StatusMoto para Oracle (conforme script)
             modelBuilder.Entity<StatusMoto>(entity =>
             {
+                entity.ToTable("status_motos");
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.MotoId).IsRequired();
-                entity.Property(e => e.UsuarioId).IsRequired();
-                entity.Property(e => e.Status).IsRequired().HasConversion<int>();
-                entity.Property(e => e.Descricao).HasMaxLength(500);
-                entity.Property(e => e.Area).IsRequired().HasMaxLength(50);
-                entity.Property(e => e.DataStatus).IsRequired();
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.MotoId).IsRequired().HasColumnName("moto_id");
+                entity.Property(e => e.UsuarioId).IsRequired().HasColumnName("usuario_id");
+                entity.Property(e => e.Status).IsRequired().HasConversion<string>().HasColumnName("status");
+                entity.Property(e => e.Descricao).HasMaxLength(500).HasColumnName("descricao");
+                entity.Property(e => e.Area).IsRequired().HasMaxLength(50).HasColumnName("area");
+                entity.Property(e => e.DataStatus).IsRequired().HasColumnName("data_criacao"); // Oracle usa data_criacao
 
                 // Relacionamentos
                 entity.HasOne(e => e.Moto)

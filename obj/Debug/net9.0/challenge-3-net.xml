@@ -309,6 +309,42 @@
             Tabela de status das motos
             </summary>
         </member>
+        <member name="T:challenge_3_net.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:challenge_3_net.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:challenge_3_net.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:challenge_3_net.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:challenge_3_net.Migrations.OracleInitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:challenge_3_net.Migrations.OracleInitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:challenge_3_net.Migrations.OracleInitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:challenge_3_net.Migrations.OracleInitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:challenge_3_net.Migrations.OracleDatabase">
+            <inheritdoc />
+        </member>
+        <member name="M:challenge_3_net.Migrations.OracleDatabase.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:challenge_3_net.Migrations.OracleDatabase.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:challenge_3_net.Migrations.OracleDatabase.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
         <member name="T:challenge_3_net.Models.DTOs.PagedResultDto`1">
             <summary>
             DTO para resultado paginado
@@ -958,26 +994,6 @@
         <member name="T:challenge_3_net.Models.TipoOperacao">
             <summary>
             Enum que define os tipos de operações possíveis
-            </summary>
-        </member>
-        <member name="F:challenge_3_net.Models.TipoOperacao.ENTREGA">
-            <summary>
-            Operação de entrega da moto
-            </summary>
-        </member>
-        <member name="F:challenge_3_net.Models.TipoOperacao.COLETA">
-            <summary>
-            Operação de coleta da moto
-            </summary>
-        </member>
-        <member name="F:challenge_3_net.Models.TipoOperacao.MANUTENCAO">
-            <summary>
-            Operação de manutenção da moto
-            </summary>
-        </member>
-        <member name="F:challenge_3_net.Models.TipoOperacao.TRANSFERENCIA">
-            <summary>
-            Operação de transferência da moto
             </summary>
         </member>
         <member name="F:challenge_3_net.Models.TipoOperacao.CHECK_IN">
