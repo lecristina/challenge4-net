@@ -7,7 +7,9 @@ namespace challenge_3_net.Controllers
      /// Controller para gerenciamento de operações
      /// </summary>
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Produces("application/json")]
     public class OperacoesController : ControllerBase
     {

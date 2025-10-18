@@ -6,22 +6,32 @@ O **TrackZone** é uma API RESTful desenvolvida em .NET 9 para gerenciamento com
 
 - **Gestão de Usuários**: Controle de acesso com diferentes perfis (Admin, Gerente, Operador)
 - **Gestão de Motos**: Cadastro, atualização e controle de veículos
-- **Gestão de Operações**: Registro de operações realizadas (Venda, Aluguel, Manutenção, Devolução)
-- **Gestão de Status**: Controle de estados das motos (Disponível, Alugada, Manutenção, Vendida)
+- **Gestão de Operações**: Registro de operações realizadas (CHECK_IN, CHECK_OUT)
+- **Gestão de Status**: Controle de estados das motos (PENDENTE, PRONTA, MANUTENCAO_AGENDADA, etc.)
+- **Autenticação JWT**: Sistema de segurança com tokens JWT
+- **Machine Learning**: Análise preditiva de status de motos usando ML.NET
+- **Health Checks**: Monitoramento de saúde da aplicação
+- **Versionamento**: Suporte a múltiplas versões da API (v1.0 e v2.0)
+- **Testes Automatizados**: Testes unitários e de integração com xUnit
 
 ## 🎯 Objetivos Acadêmicos
 
 ### Conceitos .NET Demonstrados:
 - **API RESTful**: Implementação completa com verbos HTTP adequados
-- **Entity Framework Core**: ORM para acesso a dados com SQL Server
+- **Entity Framework Core**: ORM para acesso a dados com Oracle Database
 - **Arquitetura em Camadas**: Controllers, Services, Repositories e DTOs
 - **Injeção de Dependência**: Padrão IoC implementado
 - **Validação de Dados**: Data Annotations e ModelState
-- **Documentação**: Swagger/OpenAPI configurado
+- **Documentação**: Swagger/OpenAPI configurado com versionamento
 - **Paginação**: Implementação de paginação em todos os endpoints
 - **HATEOAS**: Links de navegação nos responses
 - **Tratamento de Erros**: Try-catch com logging estruturado
 - **Clean Architecture**: Separação clara de responsabilidades
+- **Autenticação JWT**: Sistema de segurança com tokens JWT
+- **Machine Learning**: ML.NET para análise preditiva
+- **Health Checks**: Monitoramento de saúde da aplicação
+- **Versionamento**: Suporte a múltiplas versões da API
+- **Testes Automatizados**: Testes unitários e de integração
 
 ## 👥 Integrantes
 
@@ -93,14 +103,24 @@ challenge-3-net/
 
 ### Acesso a Dados:
 - **Entity Framework Core 9** - ORM para acesso a dados
-- **SQL Server** - Banco de dados relacional
+- **Oracle Database** - Banco de dados relacional
 - **Code First** - Migrations para criação do banco
 
 ### Padrões e Bibliotecas:
 - **AutoMapper** - Mapeamento de objetos
 - **BCrypt.Net-Next** - Criptografia de senhas
 - **FluentValidation** - Validação de dados
-- **Swagger/OpenAPI** - Documentação interativa da API
+- **Swagger/OpenAPI** - Documentação interativa da API com versionamento
+- **JWT Bearer Authentication** - Autenticação e autorização
+- **ML.NET 4.0** - Machine Learning para análise preditiva
+- **Health Checks** - Monitoramento de saúde da aplicação
+- **API Versioning** - Controle de versões da API
+
+### Testes:
+- **xUnit** - Framework de testes unitários
+- **Moq** - Framework de mocking para testes
+- **WebApplicationFactory** - Testes de integração
+- **Microsoft.NET.Test.Sdk** - SDK de testes
 
 ### Arquitetura:
 - **Repository Pattern** - Padrão de acesso a dados
@@ -785,8 +805,47 @@ SELECT * FROM StatusMotos;
 - `teste_automatico.ps1` - Script PowerShell para testes automatizados
 - `script_bd.sql` - DDL completo do banco de dados
 
+## 🧪 Testes Automatizados
+
+### Executar Testes:
+```bash
+# Executar todos os testes
+dotnet test
+
+# Executar testes com cobertura
+dotnet test --collect:"XPlat Code Coverage"
+
+# Executar testes específicos
+dotnet test --filter "Category=Integration"
+
+# Executar testes unitários
+dotnet test --filter "Category=Unit"
+
+# Executar testes de integração
+dotnet test --filter "Category=Integration"
+```
+
+### Tipos de Testes:
+- **Testes Unitários**: Validação de lógica de negócio (JwtService, MotoAnalysisService, Controllers)
+- **Testes de Integração**: Validação de endpoints completos com WebApplicationFactory
+- **Testes de Performance**: Validação de tempo de resposta
+- **Testes de Autenticação**: Validação de JWT e autorização
+- **Testes de ML**: Validação de funcionalidades de Machine Learning
+
+### Estrutura de Testes:
+```
+Tests/
+├── Unit/                    # Testes unitários
+│   ├── JwtServiceTests.cs
+│   ├── MotoAnalysisServiceTests.cs
+│   └── AuthControllerTests.cs
+└── Integration/             # Testes de integração
+    └── IntegrationTests.cs
+```
+
 ## 📋 Checklist de Entrega
 
+### Requisitos Básicos:
 - ✅ API RESTful implementada em .NET 9
 - ✅ Mínimo 3 entidades principais (Usuários, Motos, Operações, Status)
 - ✅ Endpoints CRUD completos com boas práticas REST
@@ -797,6 +856,16 @@ SELECT * FROM StatusMotos;
 - ✅ Validação de dados com Data Annotations
 - ✅ Arquitetura em camadas (Controllers, Services, Repositories)
 - ✅ Injeção de dependência implementada
+
+### Funcionalidades Avançadas:
+- ✅ Health Checks implementados (10 pts)
+- ✅ Versionamento da API (v1.0 e v2.0) (10 pts)
+- ✅ Segurança JWT implementada (25 pts)
+- ✅ ML.NET para análise preditiva (25 pts)
+- ✅ Testes unitários com xUnit (30 pts)
+- ✅ Testes de integração com WebApplicationFactory
+- ✅ Documentação Swagger atualizada
+- ✅ README atualizado com instruções de testes
 - ✅ Entity Framework Core com Code First
 - ✅ DTOs para transferência de dados
 - ✅ Tratamento de erros e logging

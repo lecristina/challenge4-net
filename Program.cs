@@ -5,12 +5,32 @@ using challenge_3_net.Repositories.Interfaces;
 using challenge_3_net.Services;
 using challenge_3_net.Services.Interfaces;
 using challenge_3_net.Services.Mapping;
+using challenge_3_net.Services.HealthChecks;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+// Configurar versionamento da API
+builder.Services.AddApiVersioning(opt =>
+{
+    opt.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    opt.AssumeDefaultVersionWhenUnspecified = true;
+    opt.ApiVersionReader = Microsoft.AspNetCore.Mvc.ApiVersionReader.Combine(
+        new Microsoft.AspNetCore.Mvc.QueryStringApiVersionReader("version"),
+        new Microsoft.AspNetCore.Mvc.HeaderApiVersionReader("X-Version"),
+        new Microsoft.AspNetCore.Mvc.MediaTypeApiVersionReader("ver")
+    );
+    opt.ReportApiVersions = true;
+});
+
+builder.Services.AddVersionedApiExplorer(setup =>
+{
+    setup.GroupNameFormat = "'v'VVV";
+    setup.SubstituteApiVersionInUrl = true;
+});
 
 // Configurar Application Insights
 builder.Services.AddApplicationInsightsTelemetry();
@@ -38,11 +58,24 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
+    // Configurar para versionamento
     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "Sistema de Gestão de Motos API",
-        Version = "v1",
-        Description = "API RESTful para gerenciamento de motos, usuários, operações e status",
+        Version = "v1.0",
+        Description = "API RESTful para gerenciamento de motos, usuários, operações e status - Versão 1.0",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "Equipe de Desenvolvimento",
+            Email = "dev@fiap.com"
+        }
+    });
+
+    c.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Sistema de Gestão de Motos API",
+        Version = "v2.0",
+        Description = "API RESTful para gerenciamento de motos, usuários, operações e status - Versão 2.0 (com ML.NET e JWT)",
         Contact = new Microsoft.OpenApi.Models.OpenApiContact
         {
             Name = "Equipe de Desenvolvimento",
@@ -57,6 +90,32 @@ builder.Services.AddSwaggerGen(c =>
     {
         c.IncludeXmlComments(xmlPath);
     }
+
+    // Configurar esquemas de segurança JWT
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "JWT Authorization header usando o esquema Bearer. Exemplo: \"Authorization: Bearer {token}\""
+    });
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
 
     // Configurar exemplos de payloads
     // c.EnableAnnotations(); // Comentado pois não está disponível na versão atual
@@ -74,8 +133,48 @@ builder.Services.AddScoped<IMotoService, MotoService>();
 builder.Services.AddScoped<IOperacaoService, OperacaoService>();
 builder.Services.AddScoped<IStatusMotoService, StatusMotoService>();
 
+// Configurar serviços de autenticação
+builder.Services.AddScoped<challenge_3_net.Services.Auth.JwtService>();
+
+// Configurar serviços de ML
+builder.Services.AddScoped<challenge_3_net.Services.ML.MotoAnalysisService>();
+
+// Configurar autenticação JWT
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var secretKey = jwtSettings["SecretKey"] ?? "TrackZone_Super_Secret_Key_2024_Advanced_Business_Development";
+var issuer = jwtSettings["Issuer"] ?? "TrackZoneAPI";
+var audience = jwtSettings["Audience"] ?? "TrackZoneUsers";
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey)),
+        ValidateIssuer = true,
+        ValidIssuer = issuer,
+        ValidateAudience = true,
+        ValidAudience = audience,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
+// Configurar autorização
+builder.Services.AddAuthorization();
+
 // Configurar HttpContextAccessor para HATEOAS
 builder.Services.AddHttpContextAccessor();
+
+// Configurar Health Checks
+builder.Services.AddHealthChecks()
+    .AddCheck<DatabaseHealthCheck>("database", tags: new[] { "database" })
+    .AddCheck<MemoryHealthCheck>("memory", tags: new[] { "memory" });
 
 // Configurar CORS
 builder.Services.AddCors(options =>
@@ -102,26 +201,40 @@ logger.LogInformation("Connection String presente: {HasConnectionString}",
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sistema de Gestão de Motos API v1");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sistema de Gestão de Motos API v1.0");
+    c.SwaggerEndpoint("/swagger/v2/swagger.json", "Sistema de Gestão de Motos API v2.0");
     if (app.Environment.IsDevelopment())
     {
         c.RoutePrefix = string.Empty; // Para acessar o Swagger na raiz apenas em dev
     }
-    c.DocumentTitle = "Sistema de Gestão de Motos API";
+    c.DocumentTitle = "Sistema de Gestão de Motos API - Versões";
     c.DisplayRequestDuration();
     c.EnableDeepLinking();
     c.EnableFilter();
     c.ShowExtensions();
     c.EnableValidator();
+    c.EnableTryItOutByDefault();
 });
 
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Configurar Health Checks endpoints
+app.MapHealthChecks("/health/ready", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("database")
+});
+
+app.MapHealthChecks("/health/live", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    Predicate = _ => false
+});
 
 // Endpoint de health check detalhado
 app.MapGet("/health", (IConfiguration config) => {
