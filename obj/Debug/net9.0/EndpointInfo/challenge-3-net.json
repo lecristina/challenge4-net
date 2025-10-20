@@ -2,63 +2,237 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Sistema de Gestão de Motos API",
-    "description": "API RESTful para gerenciamento de motos, usuários, operações e status",
+    "description": "API RESTful para gerenciamento de motos, usuários, operações e status - Versão 1.0",
     "contact": {
       "name": "Equipe de Desenvolvimento",
       "email": "dev@fiap.com"
     },
-    "version": "v1"
+    "version": "v1.0"
   },
   "paths": {
-    "/health": {
+    "/api/v{version}/Health": {
       "get": {
         "tags": [
-          "challenge-3-net"
+          "Health"
+        ],
+        "summary": "Verifica o status geral da aplicação",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              },
+              "application/json; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              },
+              "text/json; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "text/plain; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              },
+              "application/json; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              },
+              "text/json; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/health/database": {
+    "/api/v{version}/Health/database": {
       "get": {
         "tags": [
-          "challenge-3-net"
+          "Health"
+        ],
+        "summary": "Verifica o status do banco de dados",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              },
+              "application/json; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              },
+              "text/json; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "text/plain; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              },
+              "application/json; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              },
+              "text/json; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/admin/data": {
+    "/api/v{version}/Health/memory": {
       "get": {
         "tags": [
-          "challenge-3-net"
+          "Health"
+        ],
+        "summary": "Verifica o status de memória da aplicação",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              },
+              "application/json; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              },
+              "text/json; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "text/plain; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              },
+              "application/json; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              },
+              "text/json; ver=1.0": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatusDto"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/debug/usuarios": {
-      "get": {
-        "tags": [
-          "challenge-3-net"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Motos": {
+    "/api/v{version}/Motos": {
       "get": {
         "tags": [
           "Motos"
@@ -83,6 +257,28 @@
               "type": "integer",
               "format": "int32",
               "default": 10
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -114,20 +310,44 @@
           "Motos"
         ],
         "summary": "Cria uma nova moto",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Dados da moto a ser criada",
           "content": {
-            "application/json": {
+            "application/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/CriarMotoDto"
               }
             },
-            "text/json": {
+            "text/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/CriarMotoDto"
               }
             },
-            "application/*+json": {
+            "application/*+json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/CriarMotoDto"
               }
@@ -168,7 +388,7 @@
         }
       }
     },
-    "/api/Motos/{id}": {
+    "/api/v{version}/Motos/{id}": {
       "get": {
         "tags": [
           "Motos"
@@ -183,6 +403,28 @@
             "schema": {
               "type": "integer",
               "format": "int64"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -224,22 +466,44 @@
               "type": "integer",
               "format": "int64"
             }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
           "description": "Dados atualizados da moto",
           "content": {
-            "application/json": {
+            "application/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/AtualizarMotoDto"
               }
             },
-            "text/json": {
+            "text/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/AtualizarMotoDto"
               }
             },
-            "application/*+json": {
+            "application/*+json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/AtualizarMotoDto"
               }
@@ -304,6 +568,28 @@
               "type": "integer",
               "format": "int64"
             }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -323,7 +609,7 @@
         }
       }
     },
-    "/api/Motos/placa/{placa}": {
+    "/api/v{version}/Motos/placa/{placa}": {
       "get": {
         "tags": [
           "Motos"
@@ -338,44 +624,25 @@
             "schema": {
               "type": "string"
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retorna a moto encontrada",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MotoResponseDto"
-                }
-              }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           },
-          "404": {
-            "description": "Moto não encontrada",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Motos/chassi/{chassi}": {
-      "get": {
-        "tags": [
-          "Motos"
-        ],
-        "summary": "Busca uma moto por chassi",
-        "parameters": [
           {
-            "name": "chassi",
-            "in": "path",
-            "description": "Chassi da moto",
-            "required": true,
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
             "schema": {
               "type": "string"
             }
@@ -405,7 +672,70 @@
         }
       }
     },
-    "/api/Motos/usuario/{usuarioId}": {
+    "/api/v{version}/Motos/chassi/{chassi}": {
+      "get": {
+        "tags": [
+          "Motos"
+        ],
+        "summary": "Busca uma moto por chassi",
+        "parameters": [
+          {
+            "name": "chassi",
+            "in": "path",
+            "description": "Chassi da moto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna a moto encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MotoResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Moto não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v{version}/Motos/usuario/{usuarioId}": {
       "get": {
         "tags": [
           "Motos"
@@ -440,6 +770,28 @@
               "type": "integer",
               "format": "int32",
               "default": 10
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -477,7 +829,7 @@
         }
       }
     },
-    "/api/Operacoes": {
+    "/api/v{version}/Operacoes": {
       "get": {
         "tags": [
           "Operacoes"
@@ -502,6 +854,28 @@
               "type": "integer",
               "format": "int32",
               "default": 10
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -533,20 +907,44 @@
           "Operacoes"
         ],
         "summary": "Cria uma nova operação",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Dados da operação a ser criada",
           "content": {
-            "application/json": {
+            "application/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/CriarOperacaoDto"
               }
             },
-            "text/json": {
+            "text/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/CriarOperacaoDto"
               }
             },
-            "application/*+json": {
+            "application/*+json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/CriarOperacaoDto"
               }
@@ -587,7 +985,7 @@
         }
       }
     },
-    "/api/Operacoes/{id}": {
+    "/api/v{version}/Operacoes/{id}": {
       "get": {
         "tags": [
           "Operacoes"
@@ -602,6 +1000,28 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -643,22 +1063,44 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
           "description": "Dados atualizados da operação",
           "content": {
-            "application/json": {
+            "application/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/AtualizarOperacaoDto"
               }
             },
-            "text/json": {
+            "text/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/AtualizarOperacaoDto"
               }
             },
-            "application/*+json": {
+            "application/*+json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/AtualizarOperacaoDto"
               }
@@ -713,6 +1155,28 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -732,7 +1196,7 @@
         }
       }
     },
-    "/api/StatusMotos": {
+    "/api/v{version}/StatusMotos": {
       "get": {
         "tags": [
           "StatusMotos"
@@ -757,6 +1221,28 @@
               "type": "integer",
               "format": "int32",
               "default": 10
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -788,20 +1274,44 @@
           "StatusMotos"
         ],
         "summary": "Cria um novo status",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Dados do status a ser criado",
           "content": {
-            "application/json": {
+            "application/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/CriarStatusMotoDto"
               }
             },
-            "text/json": {
+            "text/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/CriarStatusMotoDto"
               }
             },
-            "application/*+json": {
+            "application/*+json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/CriarStatusMotoDto"
               }
@@ -842,7 +1352,7 @@
         }
       }
     },
-    "/api/StatusMotos/{id}": {
+    "/api/v{version}/StatusMotos/{id}": {
       "get": {
         "tags": [
           "StatusMotos"
@@ -857,6 +1367,28 @@
             "schema": {
               "type": "integer",
               "format": "int64"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -898,22 +1430,44 @@
               "type": "integer",
               "format": "int64"
             }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
           "description": "Dados atualizados do status",
           "content": {
-            "application/json": {
+            "application/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/AtualizarStatusMotoDto"
               }
             },
-            "text/json": {
+            "text/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/AtualizarStatusMotoDto"
               }
             },
-            "application/*+json": {
+            "application/*+json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/AtualizarStatusMotoDto"
               }
@@ -968,6 +1522,28 @@
               "type": "integer",
               "format": "int64"
             }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -987,7 +1563,7 @@
         }
       }
     },
-    "/api/StatusMotos/moto/{motoId}/atual": {
+    "/api/v{version}/StatusMotos/moto/{motoId}/atual": {
       "get": {
         "tags": [
           "StatusMotos"
@@ -1002,6 +1578,28 @@
             "schema": {
               "type": "integer",
               "format": "int64"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1029,7 +1627,7 @@
         }
       }
     },
-    "/api/StatusMotos/moto/{motoId}/historico": {
+    "/api/v{version}/StatusMotos/moto/{motoId}/historico": {
       "get": {
         "tags": [
           "StatusMotos"
@@ -1064,6 +1662,28 @@
               "type": "integer",
               "format": "int32",
               "default": 10
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1101,7 +1721,7 @@
         }
       }
     },
-    "/api/StatusMotos/tipo/{status}": {
+    "/api/v{version}/StatusMotos/tipo/{status}": {
       "get": {
         "tags": [
           "StatusMotos"
@@ -1136,6 +1756,28 @@
               "format": "int32",
               "default": 10
             }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1162,7 +1804,7 @@
         }
       }
     },
-    "/api/Usuarios": {
+    "/api/v{version}/Usuarios": {
       "get": {
         "tags": [
           "Usuarios"
@@ -1187,6 +1829,28 @@
               "type": "integer",
               "format": "int32",
               "default": 10
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1218,20 +1882,44 @@
           "Usuarios"
         ],
         "summary": "Cria um novo usuário",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Dados do usuário a ser criado",
           "content": {
-            "application/json": {
+            "application/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/CriarUsuarioDto"
               }
             },
-            "text/json": {
+            "text/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/CriarUsuarioDto"
               }
             },
-            "application/*+json": {
+            "application/*+json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/CriarUsuarioDto"
               }
@@ -1272,7 +1960,7 @@
         }
       }
     },
-    "/api/Usuarios/{id}": {
+    "/api/v{version}/Usuarios/{id}": {
       "get": {
         "tags": [
           "Usuarios"
@@ -1287,6 +1975,28 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1328,22 +2038,44 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
           "description": "Dados atualizados do usuário",
           "content": {
-            "application/json": {
+            "application/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/AtualizarUsuarioDto"
               }
             },
-            "text/json": {
+            "text/json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/AtualizarUsuarioDto"
               }
             },
-            "application/*+json": {
+            "application/*+json; ver=1.0": {
               "schema": {
                 "$ref": "#/components/schemas/AtualizarUsuarioDto"
               }
@@ -1408,6 +2140,28 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1433,11 +2187,27 @@
           "WeatherForecast"
         ],
         "operationId": "GetWeatherForecast",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
+              "text/plain; ver=1.0": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -1445,7 +2215,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/json; ver=1.0": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -1453,7 +2223,7 @@
                   }
                 }
               },
-              "text/json": {
+              "text/json; ver=1.0": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -1797,6 +2567,84 @@
         },
         "additionalProperties": false,
         "description": "DTO para criação de usuário"
+      },
+      "HealthCheckDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome da verificação",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "description": "Status da verificação",
+            "nullable": true
+          },
+          "duration": {
+            "type": "string",
+            "description": "Duração da verificação",
+            "format": "date-span"
+          },
+          "description": {
+            "type": "string",
+            "description": "Descrição da verificação",
+            "nullable": true
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": { },
+            "description": "Dados adicionais da verificação",
+            "nullable": true
+          },
+          "exception": {
+            "type": "string",
+            "description": "Exceção ocorrida (se houver)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para verificação individual de health check"
+      },
+      "HealthStatusDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status geral da aplicação",
+            "nullable": true
+          },
+          "totalDuration": {
+            "type": "string",
+            "description": "Duração total da verificação",
+            "format": "date-span"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Timestamp da verificação",
+            "format": "date-time"
+          },
+          "environment": {
+            "type": "string",
+            "description": "Ambiente da aplicação",
+            "nullable": true
+          },
+          "version": {
+            "type": "string",
+            "description": "Versão da aplicação",
+            "nullable": true
+          },
+          "checks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HealthCheckDto"
+            },
+            "description": "Lista de verificações individuais",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para resposta de health check"
       },
       "LinkDto": {
         "type": "object",
@@ -2350,6 +3198,19 @@
         },
         "additionalProperties": false
       }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "JWT Authorization header usando o esquema Bearer. Exemplo: \"Authorization: Bearer {token}\"",
+        "name": "Authorization",
+        "in": "header"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
 }

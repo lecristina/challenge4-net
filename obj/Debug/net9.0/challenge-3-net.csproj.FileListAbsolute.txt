@@ -754,3 +754,4 @@ C:\Users\crist\Desktop\TUDO\ablablabla\challenge3-net\bin\Debug\net9.0\refs\Syst
 C:\Users\crist\Desktop\TUDO\ablablabla\challenge3-net\bin\Debug\net9.0\refs\System.Xml.XPath.dll
 C:\Users\crist\Desktop\TUDO\ablablabla\challenge3-net\bin\Debug\net9.0\refs\System.Xml.XPath.XDocument.dll
 C:\Users\crist\Desktop\TUDO\ablablabla\challenge3-net\bin\Debug\net9.0\refs\WindowsBase.dll
+C:\Users\crist\Desktop\TUDO\ablablabla\challenge3-net\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
