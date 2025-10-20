@@ -285,103 +285,75 @@ GET /health
 
 ## 📚 DOCUMENTAÇÃO COMPLETA DE ENDPOINTS
 
-### 🔧 **ENDPOINTS DE SISTEMA**
+### 🔐 **ENDPOINTS DE AUTENTICAÇÃO** (`/api/v{version}/auth`)
 
-#### Health Check
+#### 1. Login (Gerar Token JWT)
 ```http
-GET /health
+POST /api/v1/auth/login
+POST /api/v2/auth/login
+Content-Type: application/json
 ```
-**Descrição**: Verifica o status da aplicação e conectividade com o banco de dados.
-
-#### Health Check do Banco
-```http
-GET /health/database
-```
-**Descrição**: Verifica especificamente a conectividade e migrações do banco de dados.
-
-#### Dados do Sistema
-```http
-GET /admin/data
-```
-**Descrição**: Retorna contadores de registros em cada tabela do sistema.
-
-#### Debug Usuários
-```http
-GET /debug/usuarios
-```
-**Descrição**: Endpoint de debug para verificar dados de usuários (apenas desenvolvimento).
-
-#### Weather Forecast (Template)
-```http
-GET /WeatherForecast
-```
-**Descrição**: Endpoint de exemplo do template .NET (pode ser removido em produção).
-
----
-
-### 👥 **ENDPOINTS DE USUÁRIOS** (`/api/usuarios`)
-
-#### 1. Listar Usuários
-```http
-GET /api/usuarios?pageNumber=1&pageSize=10
-```
-**Parâmetros**:
-- `pageNumber` (opcional): Número da página (padrão: 1)
-- `pageSize` (opcional): Tamanho da página (padrão: 10, máximo: 100)
-
-**Resposta**:
+**Body**:
 ```json
 {
-  "items": [
-    {
-      "id": 1,
-      "nomeFilial": "Empresa Exemplo",
-      "email": "contato@empresa.com",
-      "cnpj": "12.345.678/0001-90",
-      "endereco": "Rua das Flores, 123",
-      "telefone": "(11) 99999-9999",
-      "perfil": 0,
-      "dataCriacao": "2025-01-16T10:00:00Z",
-      "dataAtualizacao": "2025-01-16T10:00:00Z",
-      "links": []
-    }
-  ],
-  "pageNumber": 1,
-  "pageSize": 10,
-  "totalItems": 1,
-  "totalPages": 1,
-  "hasPreviousPage": false,
-  "hasNextPage": false,
-  "links": []
+  "email": "admin@empresa.com",
+  "senha": "123456"
 }
 ```
-
-#### 2. Buscar Usuário por ID
-```http
-GET /api/usuarios/{id}
-```
-**Parâmetros**:
-- `id`: ID do usuário (long)
 
 **Resposta** (200):
 ```json
 {
-  "id": 1,
-  "nomeFilial": "Empresa Exemplo",
-  "email": "contato@empresa.com",
-  "cnpj": "12.345.678/0001-90",
-  "endereco": "Rua das Flores, 123",
-  "telefone": "(11) 99999-9999",
-  "perfil": 0,
-  "dataCriacao": "2025-01-16T10:00:00Z",
-  "dataAtualizacao": "2025-01-16T10:00:00Z",
-  "links": []
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "expiresAt": "2025-01-16T15:00:00Z",
+  "tokenType": "Bearer"
 }
 ```
 
-#### 3. Criar Usuário
+#### 2. Validar Token JWT
 ```http
-POST /api/usuarios
+GET /api/v1/auth/validate
+GET /api/v2/auth/validate
+Authorization: Bearer {token}
+```
+
+**Resposta** (200):
+```json
+{
+  "userId": "1",
+  "email": "admin@empresa.com",
+  "role": "ADMIN",
+  "nomeFilial": "Empresa Exemplo",
+  "message": "Token JWT válido."
+}
+```
+
+---
+
+### 👥 **ENDPOINTS DE USUÁRIOS** (`/api/v{version}/usuarios`)
+
+#### 1. Listar Usuários
+```http
+GET /api/v1/usuarios?pageNumber=1&pageSize=10
+GET /api/v2/usuarios?pageNumber=1&pageSize=10
+```
+
+#### 2. Buscar Usuário por ID
+```http
+GET /api/v1/usuarios/{id}
+GET /api/v2/usuarios/{id}
+```
+
+#### 3. Buscar Usuário por Email
+```http
+GET /api/v1/usuarios/email/{email}
+GET /api/v2/usuarios/email/{email}
+```
+
+#### 4. Criar Usuário
+```http
+POST /api/v1/usuarios
+POST /api/v2/usuarios
 Content-Type: application/json
 ```
 **Body**:
@@ -393,83 +365,61 @@ Content-Type: application/json
   "cnpj": "98.765.432/0001-10",
   "endereco": "Av. Principal, 456",
   "telefone": "(11) 88888-8888",
-  "perfil": 1
+  "perfil": "ADMIN"
 }
 ```
 
-**Resposta** (201):
-```json
-{
-  "id": 2,
-  "nomeFilial": "Nova Empresa",
-  "email": "novo@empresa.com",
-  "cnpj": "98.765.432/0001-10",
-  "endereco": "Av. Principal, 456",
-  "telefone": "(11) 88888-8888",
-  "perfil": 1,
-  "dataCriacao": "2025-01-16T10:30:00Z",
-  "dataAtualizacao": "2025-01-16T10:30:00Z",
-  "links": []
-}
-```
-
-#### 4. Atualizar Usuário
+#### 5. Atualizar Usuário
 ```http
-PUT /api/usuarios/{id}
+PUT /api/v1/usuarios/{id}
+PUT /api/v2/usuarios/{id}
 Content-Type: application/json
 ```
-**Body**:
-```json
-{
-  "nomeFilial": "Empresa Atualizada",
-  "email": "atualizado@empresa.com",
-  "cnpj": "98.765.432/0001-10",
-  "endereco": "Av. Principal, 456 - Atualizada",
-  "telefone": "(11) 77777-7777",
-  "perfil": 2
-}
-```
 
-#### 5. Deletar Usuário
+#### 6. Deletar Usuário
 ```http
-DELETE /api/usuarios/{id}
+DELETE /api/v1/usuarios/{id}
+DELETE /api/v2/usuarios/{id}
 ```
-**Resposta** (204): No Content
 
 ---
 
-### 🏍️ **ENDPOINTS DE MOTOS** (`/api/motos`)
+### 🏍️ **ENDPOINTS DE MOTOS** (`/api/v{version}/motos`)
 
 #### 1. Listar Motos
 ```http
-GET /api/motos?pageNumber=1&pageSize=10
+GET /api/v1/motos?pageNumber=1&pageSize=10
+GET /api/v2/motos?pageNumber=1&pageSize=10
 ```
 
 #### 2. Buscar Moto por ID
 ```http
-GET /api/motos/{id}
+GET /api/v1/motos/{id}
+GET /api/v2/motos/{id}
 ```
 
 #### 3. Buscar Moto por Placa
 ```http
-GET /api/motos/placa/{placa}
+GET /api/v1/motos/placa/{placa}
+GET /api/v2/motos/placa/{placa}
 ```
-**Exemplo**: `GET /api/motos/placa/ABC1234`
 
 #### 4. Buscar Moto por Chassi
 ```http
-GET /api/motos/chassi/{chassi}
+GET /api/v1/motos/chassi/{chassi}
+GET /api/v2/motos/chassi/{chassi}
 ```
-**Exemplo**: `GET /api/motos/chassi/9BWHE21JX24067890`
 
 #### 5. Listar Motos por Usuário
 ```http
-GET /api/motos/usuario/{usuarioId}?pageNumber=1&pageSize=10
+GET /api/v1/motos/usuario/{usuarioId}?pageNumber=1&pageSize=10
+GET /api/v2/motos/usuario/{usuarioId}?pageNumber=1&pageSize=10
 ```
 
 #### 6. Criar Moto
 ```http
-POST /api/motos
+POST /api/v1/motos
+POST /api/v2/motos
 Content-Type: application/json
 ```
 **Body**:
@@ -482,187 +432,196 @@ Content-Type: application/json
 }
 ```
 
-**Resposta** (201):
-```json
-{
-  "id": 1,
-  "placa": "XYZ5678",
-  "chassi": "9BWHE21JX24067890",
-  "motor": "Yamaha MT-09 900cc",
-  "usuarioId": 1,
-  "nomeFilial": "Empresa Exemplo",
-  "dataCriacao": "2025-01-16T11:00:00Z",
-  "dataAtualizacao": "2025-01-16T11:00:00Z",
-  "links": []
-}
-```
-
-#### 7. Atualizar Moto
-```http
-PUT /api/motos/{id}
-Content-Type: application/json
-```
-**Body**:
-```json
-{
-  "placa": "XYZ5678",
-  "chassi": "9BWHE21JX24067890",
-  "motor": "Yamaha MT-09 900cc - Atualizada",
-  "usuarioId": 2
-}
-```
-
-#### 8. Deletar Moto
-```http
-DELETE /api/motos/{id}
-```
-
 ---
 
-### ⚙️ **ENDPOINTS DE OPERAÇÕES** (`/api/operacoes`)
+### ⚙️ **ENDPOINTS DE OPERAÇÕES** (`/api/v{version}/operacoes`)
 
 #### 1. Listar Operações
 ```http
-GET /api/operacoes?pageNumber=1&pageSize=10
+GET /api/v1/operacoes?pageNumber=1&pageSize=10
+GET /api/v2/operacoes?pageNumber=1&pageSize=10
 ```
 
 #### 2. Buscar Operação por ID
 ```http
-GET /api/operacoes/{id}
+GET /api/v1/operacoes/{id}
+GET /api/v2/operacoes/{id}
 ```
 
-#### 3. Criar Operação
+#### 3. Listar Operações por Moto
 ```http
-POST /api/operacoes
+GET /api/v1/operacoes/moto/{motoId}?pageNumber=1&pageSize=10
+GET /api/v2/operacoes/moto/{motoId}?pageNumber=1&pageSize=10
+```
+
+#### 4. Listar Operações por Usuário
+```http
+GET /api/v1/operacoes/usuario/{usuarioId}?pageNumber=1&pageSize=10
+GET /api/v2/operacoes/usuario/{usuarioId}?pageNumber=1&pageSize=10
+```
+
+#### 5. Criar Operação
+```http
+POST /api/v1/operacoes
+POST /api/v2/operacoes
 Content-Type: application/json
 ```
 **Body**:
 ```json
 {
-  "tipoOperacao": 0,
-  "descricao": "Entrega da moto para cliente empresarial - Período de 30 dias",
   "motoId": 1,
-  "usuarioId": 1
-}
-```
-
-**Resposta** (201):
-```json
-{
-  "id": 1,
-  "tipoOperacao": 0,
-  "descricao": "Entrega da moto para cliente empresarial - Período de 30 dias",
-  "dataOperacao": "2025-01-16T12:00:00Z",
-  "motoId": 1,
-  "placaMoto": "XYZ5678",
+  "tipo": "CHECK_IN",
   "usuarioId": 1,
-  "nomeUsuario": "Empresa Exemplo",
-  "links": []
+  "observacoes": "Check-in para manutenção preventiva"
 }
-```
-
-#### 4. Atualizar Operação
-```http
-PUT /api/operacoes/{id}
-Content-Type: application/json
-```
-**Body**:
-```json
-{
-  "tipoOperacao": 1,
-  "descricao": "Operação atualizada - Coleta da moto após entrega",
-  "motoId": 1,
-  "usuarioId": 2
-}
-```
-
-#### 5. Deletar Operação
-```http
-DELETE /api/operacoes/{id}
 ```
 
 ---
 
-### 📊 **ENDPOINTS DE STATUS MOTOS** (`/api/statusmotos`)
+### 📊 **ENDPOINTS DE STATUS MOTOS** (`/api/v{version}/statusmotos`)
 
 #### 1. Listar Status
 ```http
-GET /api/statusmotos?pageNumber=1&pageSize=10
+GET /api/v1/statusmotos?pageNumber=1&pageSize=10
+GET /api/v2/statusmotos?pageNumber=1&pageSize=10
 ```
 
 #### 2. Buscar Status por ID
 ```http
-GET /api/statusmotos/{id}
+GET /api/v1/statusmotos/{id}
+GET /api/v2/statusmotos/{id}
 ```
 
-#### 3. Buscar Status Atual da Moto
+#### 3. Listar Status por Moto
 ```http
-GET /api/statusmotos/moto/{motoId}/atual
+GET /api/v1/statusmotos/moto/{motoId}?pageNumber=1&pageSize=10
+GET /api/v2/statusmotos/moto/{motoId}?pageNumber=1&pageSize=10
 ```
 
-#### 4. Listar Histórico de Status da Moto
+#### 4. Listar Status por Usuário
 ```http
-GET /api/statusmotos/moto/{motoId}/historico?pageNumber=1&pageSize=10
+GET /api/v1/statusmotos/usuario/{usuarioId}?pageNumber=1&pageSize=10
+GET /api/v2/statusmotos/usuario/{usuarioId}?pageNumber=1&pageSize=10
 ```
 
-#### 5. Listar Status por Tipo
+#### 5. Criar Status
 ```http
-GET /api/statusmotos/tipo/{status}?pageNumber=1&pageSize=10
-```
-**Exemplo**: `GET /api/statusmotos/tipo/DISPONIVEL`
-
-#### 6. Criar Status
-```http
-POST /api/statusmotos
+POST /api/v1/statusmotos
+POST /api/v2/statusmotos
 Content-Type: application/json
 ```
 **Body**:
 ```json
 {
-  "status": 0,
-  "descricao": "Moto disponível para uso - Revisão completa realizada",
-  "area": "Pátio Principal - Setor A",
   "motoId": 1,
+  "status": "PENDENTE",
+  "area": "Oficina Principal",
   "usuarioId": 1
 }
 ```
 
-**Resposta** (201):
-```json
-{
-  "id": 1,
-  "status": 0,
-  "descricao": "Moto disponível para uso - Revisão completa realizada",
-  "area": "Pátio Principal - Setor A",
-  "dataStatus": "2025-01-16T13:00:00Z",
-  "motoId": 1,
-  "placaMoto": "XYZ5678",
-  "usuarioId": 1,
-  "nomeUsuario": "Empresa Exemplo",
-  "links": []
-}
-```
+---
 
-#### 7. Atualizar Status
+### 🤖 **ENDPOINTS DE MACHINE LEARNING** (`/api/v2/ml`) - **APENAS VERSÃO 2.0**
+
+#### 1. Predição de Próximo Status
 ```http
-PUT /api/statusmotos/{id}
+POST /api/v2/ml/predict-next-status
+Authorization: Bearer {token}
 Content-Type: application/json
 ```
 **Body**:
 ```json
 {
-  "status": 2,
-  "descricao": "Status atualizado - Moto em manutenção preventiva",
-  "area": "Oficina - Setor B",
   "motoId": 1,
-  "usuarioId": 2
+  "usuarioId": 1,
+  "tipoOperacao": "CHECK_IN",
+  "statusAtual": "PENDENTE"
 }
 ```
 
-#### 8. Deletar Status
-```http
-DELETE /api/statusmotos/{id}
+**Resposta** (200):
+```json
+{
+  "predictedStatus": "REPARO_SIMPLES",
+  "score": [0.1, 0.3, 0.6, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+}
 ```
+
+---
+
+### 🏥 **ENDPOINTS DE HEALTH CHECK** (`/api/v{version}/health`)
+
+#### 1. Health Check Geral
+```http
+GET /api/v1/health
+GET /api/v2/health
+```
+
+#### 2. Health Check do Banco de Dados
+```http
+GET /api/v1/health/database
+GET /api/v2/health/database
+```
+
+#### 3. Health Check da Memória
+```http
+GET /api/v1/health/memory
+GET /api/v2/health/memory
+```
+
+#### 4. Health Check Padrão (.NET)
+```http
+GET /health/ready
+GET /health/live
+```
+
+---
+
+### 🔍 **ENDPOINTS DE DEBUG** (Desenvolvimento)
+
+#### 1. Dados de Debug
+```http
+GET /admin/data
+```
+
+#### 2. Debug de Usuários
+```http
+GET /debug/usuarios
+```
+
+---
+
+## 🔐 **AUTENTICAÇÃO E AUTORIZAÇÃO**
+
+### **Como usar JWT:**
+
+1. **Fazer Login:**
+```http
+POST /api/v2/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@empresa.com",
+  "senha": "123456"
+}
+```
+
+2. **Usar Token em Requisições:**
+```http
+GET /api/v2/usuarios
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+### **Roles e Permissões:**
+- **ADMIN**: Acesso total a todos os endpoints
+- **GERENTE**: Acesso a relatórios e operações + ML.NET
+- **OPERADOR**: Acesso limitado às operações básicas
+
+### **Endpoints Protegidos:**
+- Todos os endpoints da **v2.0** requerem autenticação JWT
+- Endpoint de **ML.NET** requer role ADMIN ou GERENTE
+- Endpoints da **v1.0** são públicos (sem autenticação)
 
 ---
 
