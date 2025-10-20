@@ -6,6 +6,7 @@ using challenge_3_net.Services;
 using challenge_3_net.Services.Interfaces;
 using challenge_3_net.Services.Mapping;
 using challenge_3_net.Services.HealthChecks;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,10 +19,10 @@ builder.Services.AddApiVersioning(opt =>
 {
     opt.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
     opt.AssumeDefaultVersionWhenUnspecified = true;
-    opt.ApiVersionReader = Microsoft.AspNetCore.Mvc.ApiVersionReader.Combine(
-        new Microsoft.AspNetCore.Mvc.QueryStringApiVersionReader("version"),
-        new Microsoft.AspNetCore.Mvc.HeaderApiVersionReader("X-Version"),
-        new Microsoft.AspNetCore.Mvc.MediaTypeApiVersionReader("ver")
+    opt.ApiVersionReader = ApiVersionReader.Combine(
+        new QueryStringApiVersionReader("version"),
+        new HeaderApiVersionReader("X-Version"),
+        new MediaTypeApiVersionReader("ver")
     );
     opt.ReportApiVersions = true;
 });
@@ -387,3 +388,6 @@ app.MapGet("/debug/usuarios", async (ApplicationDbContext context) => {
 });
 
 app.Run();
+
+// Expor a classe Program para testes
+public partial class Program { }

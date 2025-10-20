@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ceNPAfo8ZzA=",
+  "dgSpecHash": "7G/3MFbB0kA=",
   "success": true,
   "projectFilePath": "C:\\Users\\crist\\Desktop\\TUDO\\ablablabla\\challenge3-net\\challenge-3-net.csproj",
   "expectedPackageFiles": [
@@ -52,6 +52,7 @@
     "C:\\Users\\crist\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\9.0.1\\microsoft.entityframeworkcore.abstractions.9.0.1.nupkg.sha512",
     "C:\\Users\\crist\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\9.0.1\\microsoft.entityframeworkcore.analyzers.9.0.1.nupkg.sha512",
     "C:\\Users\\crist\\.nuget\\packages\\microsoft.entityframeworkcore.design\\9.0.1\\microsoft.entityframeworkcore.design.9.0.1.nupkg.sha512",
+    "C:\\Users\\crist\\.nuget\\packages\\microsoft.entityframeworkcore.inmemory\\9.0.1\\microsoft.entityframeworkcore.inmemory.9.0.1.nupkg.sha512",
     "C:\\Users\\crist\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\9.0.1\\microsoft.entityframeworkcore.relational.9.0.1.nupkg.sha512",
     "C:\\Users\\crist\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\9.0.1\\microsoft.entityframeworkcore.sqlserver.9.0.1.nupkg.sha512",
     "C:\\Users\\crist\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\9.0.1\\microsoft.entityframeworkcore.tools.9.0.1.nupkg.sha512",

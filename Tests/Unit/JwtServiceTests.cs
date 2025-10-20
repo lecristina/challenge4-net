@@ -52,7 +52,7 @@ namespace challenge_3_net.Tests.Unit
                 Id = 1,
                 NomeFilial = "Teste Filial",
                 Email = "teste@teste.com",
-                Perfil = Perfil.ADMIN,
+                Perfil = PerfilUsuario.ADMIN,
                 Cnpj = "12345678000199",
                 SenhaHash = BCrypt.Net.BCrypt.HashPassword("123456")
             };
@@ -75,7 +75,7 @@ namespace challenge_3_net.Tests.Unit
                 Id = 1,
                 NomeFilial = "Admin Filial",
                 Email = "admin@teste.com",
-                Perfil = Perfil.ADMIN,
+                Perfil = PerfilUsuario.ADMIN,
                 Cnpj = "11111111000111",
                 SenhaHash = BCrypt.Net.BCrypt.HashPassword("123456")
             };
@@ -85,7 +85,7 @@ namespace challenge_3_net.Tests.Unit
                 Id = 2,
                 NomeFilial = "Operador Filial",
                 Email = "operador@teste.com",
-                Perfil = Perfil.OPERADOR,
+                Perfil = PerfilUsuario.OPERADOR,
                 Cnpj = "22222222000222",
                 SenhaHash = BCrypt.Net.BCrypt.HashPassword("123456")
             };
@@ -107,7 +107,7 @@ namespace challenge_3_net.Tests.Unit
                 Id = 1,
                 NomeFilial = "Teste Filial",
                 Email = "teste@teste.com",
-                Perfil = Perfil.ADMIN,
+                Perfil = PerfilUsuario.ADMIN,
                 Cnpj = "12345678000199",
                 SenhaHash = BCrypt.Net.BCrypt.HashPassword("123456")
             };
@@ -160,7 +160,7 @@ namespace challenge_3_net.Tests.Unit
                 Id = 1,
                 NomeFilial = "Admin Filial",
                 Email = "admin@teste.com",
-                Perfil = Perfil.ADMIN,
+                Perfil = PerfilUsuario.ADMIN,
                 Cnpj = "12345678000199",
                 SenhaHash = BCrypt.Net.BCrypt.HashPassword("123456")
             };
@@ -188,7 +188,7 @@ namespace challenge_3_net.Tests.Unit
                 Id = 1,
                 NomeFilial = "Operador Filial",
                 Email = "operador@teste.com",
-                Perfil = Perfil.OPERADOR,
+                Perfil = PerfilUsuario.OPERADOR,
                 Cnpj = "12345678000199",
                 SenhaHash = BCrypt.Net.BCrypt.HashPassword("123456")
             };
@@ -216,7 +216,7 @@ namespace challenge_3_net.Tests.Unit
                 Id = 1,
                 NomeFilial = "Gerente Filial",
                 Email = "gerente@teste.com",
-                Perfil = Perfil.GERENTE,
+                Perfil = PerfilUsuario.GERENTE,
                 Cnpj = "12345678000199",
                 SenhaHash = BCrypt.Net.BCrypt.HashPassword("123456")
             };
@@ -235,7 +235,7 @@ namespace challenge_3_net.Tests.Unit
             Assert.True(isManagerOrAdmin);
         }
 
-        public void Dispose()
+        private void Dispose()
         {
             _context.Dispose();
         }

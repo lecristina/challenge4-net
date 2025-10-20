@@ -4,6 +4,351 @@
         <name>challenge-3-net</name>
     </assembly>
     <members>
+        <member name="T:challenge_3_net.Controllers.AuthController">
+            <summary>
+            Controller para autenticação e autorização
+            </summary>
+        </member>
+        <member name="M:challenge_3_net.Controllers.AuthController.Login(challenge_3_net.Controllers.LoginDto)">
+            <summary>
+            Autentica um usuário e retorna um token JWT
+            </summary>
+            <param name="loginDto">Dados de login do usuário</param>
+            <returns>Token JWT se autenticação bem-sucedida</returns>
+            <response code="200">Login realizado com sucesso</response>
+            <response code="401">Credenciais inválidas</response>
+            <response code="400">Dados de entrada inválidos</response>
+        </member>
+        <member name="M:challenge_3_net.Controllers.AuthController.ValidateToken">
+            <summary>
+            Valida um token JWT e retorna informações do usuário
+            </summary>
+            <returns>Informações do usuário autenticado</returns>
+            <response code="200">Token válido</response>
+            <response code="401">Token inválido ou expirado</response>
+        </member>
+        <member name="M:challenge_3_net.Controllers.AuthController.GetCurrentUser">
+            <summary>
+            Obtém informações do usuário atual
+            </summary>
+            <returns>Informações do usuário atual</returns>
+            <response code="200">Informações obtidas com sucesso</response>
+            <response code="401">Usuário não autenticado</response>
+        </member>
+        <member name="M:challenge_3_net.Controllers.AuthController.CheckAdminPermission">
+            <summary>
+            Verifica se o usuário atual tem permissões de administrador
+            </summary>
+            <returns>Status de permissão</returns>
+            <response code="200">Verificação realizada</response>
+            <response code="401">Usuário não autenticado</response>
+        </member>
+        <member name="T:challenge_3_net.Controllers.LoginDto">
+            <summary>
+            DTO para dados de login
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.LoginDto.Email">
+            <summary>
+            Email do usuário
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.LoginDto.Senha">
+            <summary>
+            Senha do usuário
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Controllers.LoginResponseDto">
+            <summary>
+            DTO para resposta de login
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.LoginResponseDto.Token">
+            <summary>
+            Token JWT
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.LoginResponseDto.TokenType">
+            <summary>
+            Tipo do token
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.LoginResponseDto.ExpiresIn">
+            <summary>
+            Tempo de expiração em segundos
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.LoginResponseDto.Message">
+            <summary>
+            Mensagem de resposta
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Controllers.UserInfoDto">
+            <summary>
+            DTO para informações do usuário
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.UserInfoDto.Id">
+            <summary>
+            ID do usuário
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.UserInfoDto.NomeFilial">
+            <summary>
+            Nome da filial
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.UserInfoDto.Email">
+            <summary>
+            Email do usuário
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.UserInfoDto.Perfil">
+            <summary>
+            Perfil do usuário
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.UserInfoDto.Cnpj">
+            <summary>
+            CNPJ da filial
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.UserInfoDto.DataCriacao">
+            <summary>
+            Data de criação
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.UserInfoDto.Roles">
+            <summary>
+            Roles do usuário
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Controllers.PermissionCheckDto">
+            <summary>
+            DTO para verificação de permissões
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.PermissionCheckDto.IsAdmin">
+            <summary>
+            Se é administrador
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.PermissionCheckDto.IsManager">
+            <summary>
+            Se é gerente ou administrador
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.PermissionCheckDto.IsOperador">
+            <summary>
+            Se é operador
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.PermissionCheckDto.Message">
+            <summary>
+            Mensagem descritiva
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Controllers.ErrorResponseDto">
+            <summary>
+            DTO para resposta de erro
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.ErrorResponseDto.Message">
+            <summary>
+            Mensagem de erro
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.ErrorResponseDto.Details">
+            <summary>
+            Detalhes do erro
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Controllers.HealthController">
+            <summary>
+            Controller para Health Checks da API
+            </summary>
+        </member>
+        <member name="M:challenge_3_net.Controllers.HealthController.GetHealth">
+            <summary>
+            Verifica o status geral da aplicação
+            </summary>
+            <returns>Status da aplicação</returns>
+        </member>
+        <member name="M:challenge_3_net.Controllers.HealthController.GetDatabaseHealth">
+            <summary>
+            Verifica o status do banco de dados
+            </summary>
+            <returns>Status do banco de dados</returns>
+        </member>
+        <member name="M:challenge_3_net.Controllers.HealthController.GetMemoryHealth">
+            <summary>
+            Verifica o status de memória da aplicação
+            </summary>
+            <returns>Status da memória</returns>
+        </member>
+        <member name="T:challenge_3_net.Controllers.HealthStatusDto">
+            <summary>
+            DTO para resposta de health check
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.HealthStatusDto.Status">
+            <summary>
+            Status geral da aplicação
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.HealthStatusDto.TotalDuration">
+            <summary>
+            Duração total da verificação
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.HealthStatusDto.Timestamp">
+            <summary>
+            Timestamp da verificação
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.HealthStatusDto.Environment">
+            <summary>
+            Ambiente da aplicação
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.HealthStatusDto.Version">
+            <summary>
+            Versão da aplicação
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.HealthStatusDto.Checks">
+            <summary>
+            Lista de verificações individuais
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Controllers.HealthCheckDto">
+            <summary>
+            DTO para verificação individual de health check
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.HealthCheckDto.Name">
+            <summary>
+            Nome da verificação
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.HealthCheckDto.Status">
+            <summary>
+            Status da verificação
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.HealthCheckDto.Duration">
+            <summary>
+            Duração da verificação
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.HealthCheckDto.Description">
+            <summary>
+            Descrição da verificação
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.HealthCheckDto.Data">
+            <summary>
+            Dados adicionais da verificação
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.HealthCheckDto.Exception">
+            <summary>
+            Exceção ocorrida (se houver)
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Controllers.MLController">
+            <summary>
+            Controller para funcionalidades de Machine Learning
+            </summary>
+        </member>
+        <member name="M:challenge_3_net.Controllers.MLController.TrainModel">
+            <summary>
+            Treina um modelo de Machine Learning para predição de status de motos
+            </summary>
+            <returns>Resultado do treinamento</returns>
+            <response code="200">Treinamento realizado com sucesso</response>
+            <response code="400">Dados insuficientes para treinamento</response>
+            <response code="401">Usuário não autenticado</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+        <member name="M:challenge_3_net.Controllers.MLController.PredictMotoStatus(challenge_3_net.Services.ML.MotoPredictionInput)">
+            <summary>
+            Prediz o status de uma moto usando Machine Learning
+            </summary>
+            <param name="input">Dados de entrada para predição</param>
+            <returns>Predição do status da moto</returns>
+            <response code="200">Predição realizada com sucesso</response>
+            <response code="400">Dados de entrada inválidos</response>
+            <response code="401">Usuário não autenticado</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+        <member name="M:challenge_3_net.Controllers.MLController.AnalyzePatterns">
+            <summary>
+            Analisa padrões nas operações de motos usando Machine Learning
+            </summary>
+            <returns>Análise de padrões</returns>
+            <response code="200">Análise realizada com sucesso</response>
+            <response code="401">Usuário não autenticado</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+        <member name="M:challenge_3_net.Controllers.MLController.GetModelInfo">
+            <summary>
+            Obtém informações sobre o modelo de Machine Learning
+            </summary>
+            <returns>Informações do modelo</returns>
+            <response code="200">Informações obtidas com sucesso</response>
+            <response code="401">Usuário não autenticado</response>
+        </member>
+        <member name="T:challenge_3_net.Controllers.ModelInfoDto">
+            <summary>
+            DTO para informações do modelo ML
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.ModelInfoDto.ModelName">
+            <summary>
+            Nome do modelo
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.ModelInfoDto.Version">
+            <summary>
+            Versão do modelo
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.ModelInfoDto.Algorithm">
+            <summary>
+            Algoritmo utilizado
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.ModelInfoDto.Features">
+            <summary>
+            Features utilizadas
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.ModelInfoDto.TargetVariable">
+            <summary>
+            Variável alvo
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.ModelInfoDto.PossibleStatuses">
+            <summary>
+            Status possíveis
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.ModelInfoDto.Description">
+            <summary>
+            Descrição do modelo
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.ModelInfoDto.CreatedAt">
+            <summary>
+            Data de criação
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Controllers.ModelInfoDto.Framework">
+            <summary>
+            Framework utilizado
+            </summary>
+        </member>
         <member name="T:challenge_3_net.Controllers.MotosController">
             <summary>
             Controller para gerenciamento de motos
@@ -444,6 +789,41 @@
         <member name="P:challenge_3_net.Models.DTOs.ErrorResponseDto.ValidationErrors">
             <summary>
             Lista de erros de validação
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Models.DTOs.LoginDto">
+            <summary>
+            DTO para login de usuário
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Models.DTOs.LoginDto.Email">
+            <summary>
+            Email do usuário
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Models.DTOs.LoginDto.Senha">
+            <summary>
+            Senha do usuário
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Models.DTOs.LoginResponseDto">
+            <summary>
+            DTO para resposta de login
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Models.DTOs.LoginResponseDto.Token">
+            <summary>
+            Token JWT gerado
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Models.DTOs.LoginResponseDto.ExpiresAt">
+            <summary>
+            Data de expiração do token
+            </summary>
+        </member>
+        <member name="P:challenge_3_net.Models.DTOs.LoginResponseDto.TokenType">
+            <summary>
+            Tipo do token
             </summary>
         </member>
         <member name="T:challenge_3_net.Models.DTOs.CriarMotoDto">
@@ -1518,6 +1898,62 @@
             Implementação do repositório de usuários
             </summary>
         </member>
+        <member name="T:challenge_3_net.Services.Auth.JwtService">
+            <summary>
+            Serviço para geração e validação de tokens JWT
+            </summary>
+        </member>
+        <member name="M:challenge_3_net.Services.Auth.JwtService.GenerateToken(challenge_3_net.Models.Usuario)">
+            <summary>
+            Gera um token JWT para o usuário
+            </summary>
+            <param name="usuario">Usuário para o qual gerar o token</param>
+            <returns>Token JWT</returns>
+        </member>
+        <member name="M:challenge_3_net.Services.Auth.JwtService.ValidateToken(System.String)">
+            <summary>
+            Valida um token JWT
+            </summary>
+            <param name="token">Token a ser validado</param>
+            <returns>Claims do token se válido, null se inválido</returns>
+        </member>
+        <member name="M:challenge_3_net.Services.Auth.JwtService.AuthenticateAsync(System.String,System.String)">
+            <summary>
+            Autentica um usuário e retorna o token JWT
+            </summary>
+            <param name="email">Email do usuário</param>
+            <param name="senha">Senha do usuário</param>
+            <returns>Token JWT se autenticação bem-sucedida, null caso contrário</returns>
+        </member>
+        <member name="M:challenge_3_net.Services.Auth.JwtService.GetCurrentUserAsync(System.Security.Claims.ClaimsPrincipal)">
+            <summary>
+            Obtém o usuário atual a partir do token JWT
+            </summary>
+            <param name="principal">Claims principal do usuário autenticado</param>
+            <returns>Usuário atual ou null se não encontrado</returns>
+        </member>
+        <member name="M:challenge_3_net.Services.Auth.JwtService.HasRole(System.Security.Claims.ClaimsPrincipal,System.String)">
+            <summary>
+            Verifica se o usuário tem uma role específica
+            </summary>
+            <param name="principal">Claims principal do usuário</param>
+            <param name="role">Role a ser verificada</param>
+            <returns>True se o usuário tem a role, false caso contrário</returns>
+        </member>
+        <member name="M:challenge_3_net.Services.Auth.JwtService.IsAdmin(System.Security.Claims.ClaimsPrincipal)">
+            <summary>
+            Verifica se o usuário tem permissão de administrador
+            </summary>
+            <param name="principal">Claims principal do usuário</param>
+            <returns>True se é admin, false caso contrário</returns>
+        </member>
+        <member name="M:challenge_3_net.Services.Auth.JwtService.IsManagerOrAdmin(System.Security.Claims.ClaimsPrincipal)">
+            <summary>
+            Verifica se o usuário tem permissão de gerente ou admin
+            </summary>
+            <param name="principal">Claims principal do usuário</param>
+            <returns>True se é gerente ou admin, false caso contrário</returns>
+        </member>
         <member name="T:challenge_3_net.Services.BaseService">
             <summary>
             Classe base para serviços com funcionalidades comuns
@@ -1555,6 +1991,16 @@
             <param name="controllerName">Nome do controller</param>
             <param name="baseUrl">URL base da API</param>
             <returns>Resultado paginado</returns>
+        </member>
+        <member name="T:challenge_3_net.Services.HealthChecks.DatabaseHealthCheck">
+            <summary>
+            Health check customizado para verificar a conectividade do banco de dados Oracle
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Services.HealthChecks.MemoryHealthCheck">
+            <summary>
+            Health check customizado para verificar o uso de memória da aplicação
+            </summary>
         </member>
         <member name="T:challenge_3_net.Services.Interfaces.IMotoService">
             <summary>
@@ -1846,6 +2292,70 @@
             Perfil de mapeamento do AutoMapper
             </summary>
         </member>
+        <member name="T:challenge_3_net.Services.ML.MotoAnalysisService">
+            <summary>
+            Serviço de análise preditiva de motos usando ML.NET
+            </summary>
+        </member>
+        <member name="M:challenge_3_net.Services.ML.MotoAnalysisService.TrainStatusPredictionModelAsync">
+            <summary>
+            Treina um modelo para prever o status de uma moto baseado em características
+            </summary>
+            <returns>Resultado do treinamento</returns>
+        </member>
+        <member name="M:challenge_3_net.Services.ML.MotoAnalysisService.PredictMotoStatusAsync(challenge_3_net.Services.ML.MotoPredictionInput)">
+            <summary>
+            Prediz o status de uma moto baseado em características
+            </summary>
+            <param name="input">Dados de entrada para predição</param>
+            <returns>Predição do status</returns>
+        </member>
+        <member name="M:challenge_3_net.Services.ML.MotoAnalysisService.AnalyzeOperationPatternsAsync">
+            <summary>
+            Analisa padrões nas operações de motos
+            </summary>
+            <returns>Análise de padrões</returns>
+        </member>
+        <member name="M:challenge_3_net.Services.ML.MotoAnalysisService.GetTrainingDataAsync">
+            <summary>
+            Obtém dados de treinamento do banco de dados
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Services.ML.MotoTrainingData">
+            <summary>
+            Dados de treinamento para ML.NET
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Services.ML.MotoPredictionOutput">
+            <summary>
+            Output de predição ML.NET
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Services.ML.MotoPredictionInput">
+            <summary>
+            Input para predição
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Services.ML.ModelTrainingResult">
+            <summary>
+            Resultado do treinamento do modelo
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Services.ML.ModelMetrics">
+            <summary>
+            Métricas do modelo
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Services.ML.StatusPredictionResult">
+            <summary>
+            Resultado de predição de status
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Services.ML.PatternAnalysisResult">
+            <summary>
+            Resultado de análise de padrões
+            </summary>
+        </member>
         <member name="T:challenge_3_net.Services.MotoService">
             <summary>
             Serviço para gerenciamento de motos
@@ -1864,6 +2374,11 @@
         <member name="T:challenge_3_net.Services.UsuarioService">
             <summary>
             Serviço para gerenciamento de usuários
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Tests.Unit.JwtServiceTests">
+            <summary>
+            Testes unitários para JwtService
             </summary>
         </member>
     </members>

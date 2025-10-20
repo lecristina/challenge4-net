@@ -56,16 +56,16 @@ namespace challenge_3_net.Services.Auth
                 // Adicionar roles baseadas no perfil
                 switch (usuario.Perfil)
                 {
-                    case Perfil.ADMIN:
+                    case PerfilUsuario.ADMIN:
                         claims.Add(new Claim(ClaimTypes.Role, "Admin"));
                         claims.Add(new Claim(ClaimTypes.Role, "Gerente"));
                         claims.Add(new Claim(ClaimTypes.Role, "Operador"));
                         break;
-                    case Perfil.GERENTE:
+                    case PerfilUsuario.GERENTE:
                         claims.Add(new Claim(ClaimTypes.Role, "Gerente"));
                         claims.Add(new Claim(ClaimTypes.Role, "Operador"));
                         break;
-                    case Perfil.OPERADOR:
+                    case PerfilUsuario.OPERADOR:
                         claims.Add(new Claim(ClaimTypes.Role, "Operador"));
                         break;
                 }

@@ -1,5 +1,8 @@
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using challenge_3_net.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace challenge_3_net.Services.HealthChecks
 {

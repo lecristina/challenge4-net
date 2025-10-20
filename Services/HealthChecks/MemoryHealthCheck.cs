@@ -56,7 +56,7 @@ namespace challenge_3_net.Services.HealthChecks
                 }
                 else
                 {
-                    return Task.FromResult(HealthCheckResult.Degraded("Uso de memória está próximo ou acima do limite", data));
+                    return Task.FromResult(HealthCheckResult.Degraded("Uso de memória está próximo ou acima do limite"));
                 }
             }
             catch (Exception ex)
@@ -70,7 +70,7 @@ namespace challenge_3_net.Services.HealthChecks
                     { "timestamp", DateTime.UtcNow }
                 };
 
-                return Task.FromResult(HealthCheckResult.Unhealthy("Erro ao verificar uso de memória", ex, data));
+                return Task.FromResult(HealthCheckResult.Unhealthy("Erro ao verificar uso de memória", ex));
             }
         }
     }

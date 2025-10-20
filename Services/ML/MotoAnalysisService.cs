@@ -213,10 +213,10 @@ namespace challenge_3_net.Services.ML
                     Success = true,
                     Message = "Análise de padrões concluída com sucesso",
                     TotalOperacoes = operacoes.Count,
-                    OperacaoFrequencia = operacaoFrequencia,
-                    OperacaoPorHora = operacaoPorHora,
-                    OperacaoPorUsuario = operacaoPorUsuario,
-                    MotosMaisAtivas = motosMaisAtivas,
+                    OperacaoFrequencia = operacaoFrequencia.Cast<dynamic>().ToList(),
+                    OperacaoPorHora = operacaoPorHora.Cast<dynamic>().ToList(),
+                    OperacaoPorUsuario = operacaoPorUsuario.Cast<dynamic>().ToList(),
+                    MotosMaisAtivas = motosMaisAtivas.Cast<dynamic>().ToList(),
                     PeriodoAnalise = new
                     {
                         Inicio = operacoes.Min(o => o.DataOperacao),

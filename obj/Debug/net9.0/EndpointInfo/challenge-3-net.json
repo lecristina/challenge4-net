@@ -2088,11 +2088,7 @@
           5,
           6,
           7,
-          8,
-          9,
-          10,
-          11,
-          12
+          8
         ],
         "type": "integer",
         "description": "Enum que define os possíveis status de uma moto",
@@ -2213,11 +2209,7 @@
       "TipoOperacao": {
         "enum": [
           0,
-          1,
-          2,
-          3,
-          4,
-          5
+          1
         ],
         "type": "integer",
         "description": "Enum que define os tipos de operações possíveis",
