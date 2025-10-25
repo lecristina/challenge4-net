@@ -389,19 +389,21 @@ Content-Type: application/json
 
 #### 2. Validar Token JWT
 ```http
-GET /api/v1/auth/validate
-GET /api/v2/auth/validate
+POST /api/v1/auth/validate
+POST /api/v2/auth/validate
 Authorization: Bearer {token}
 ```
 
 **Resposta** (200):
 ```json
 {
-  "userId": "53",
+  "id": 53,
+  "nomeFilial": "ala",
   "email": "ala@example.com",
-  "role": "ADMIN",
-  "nomeFilial": "Empresa Teste",
-  "message": "Token JWT válido."
+  "perfil": "GERENTE",
+  "cnpj": "98.765.000/0001-10",
+  "dataCriacao": "2025-10-25T18:43:28.248414",
+  "roles": ["Gerente", "Operador"]
 }
 ```
 
