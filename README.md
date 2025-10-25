@@ -283,6 +283,63 @@ GET /health
 
 ---
 
+## 🔄 **COMO FUNCIONA O VERSIONAMENTO DA API**
+
+### **🎯 O que é Versionamento?**
+
+É como ter **duas versões diferentes** da mesma API rodando ao mesmo tempo. Tipo ter um **iPhone 13** e **iPhone 14** - ambos fazem a mesma coisa, mas um tem recursos mais novos.
+
+### **📱 Analogia Simples:**
+
+Imagine que você tem um **app de delivery**:
+
+- **Versão 1.0**: App básico - só pedir comida
+- **Versão 2.0**: App avançado - pedir comida + rastreamento + chat + ML para sugerir pratos
+
+**Ambas funcionam**, mas a v2.0 tem mais recursos!
+
+---
+
+## 🔧 **COMO USAR AS VERSÕES:**
+
+### **Método 1: Por URL (Mais Simples)**
+```http
+# Usar v1.0
+GET http://localhost:5000/api/v1/usuarios
+
+# Usar v2.0  
+GET http://localhost:5000/api/v2/usuarios
+```
+
+### **Método 2: Por Header**
+```http
+GET http://localhost:5000/api/usuarios
+X-Version: 2.0
+```
+
+### **Método 3: Por Query String**
+```http
+GET http://localhost:5000/api/usuarios?version=2.0
+```
+
+---
+
+## 🎯 **FUNCIONALIDADES POR VERSÃO:**
+
+### **🔵 Versão 1.0 (Básica):**
+- ✅ CRUD de usuários, motos, operações, status
+- ✅ Sem autenticação (público)
+- ✅ Funcionalidades básicas
+
+### **🔴 Versão 2.0 (Avançada):**
+- ✅ **TUDO da v1.0** +
+- 🔐 **JWT Authentication** (`/auth/login`, `/auth/validate`)
+- 🤖 **ML.NET** (`/ml/predict-next-status`)
+- 🏥 **Health Checks** mais detalhados
+- 🔒 **Proteção por roles** (ADMIN, GERENTE, OPERADOR)
+
+---
+
 ## 📚 DOCUMENTAÇÃO COMPLETA DE ENDPOINTS
 
 ### 🔐 **ENDPOINTS DE AUTENTICAÇÃO** (`/api/v{version}/auth`)
@@ -332,31 +389,104 @@ Authorization: Bearer {token}
 
 ### 👥 **ENDPOINTS DE USUÁRIOS** (`/api/v{version}/usuarios`)
 
-#### 1. Listar Usuários
+#### **📋 1. LISTAR USUÁRIOS**
+
+**Versão 1.0 (Público):**
 ```http
 GET /api/v1/usuarios?pageNumber=1&pageSize=10
+```
+
+**Versão 2.0 (Com JWT):**
+```http
 GET /api/v2/usuarios?pageNumber=1&pageSize=10
+Authorization: Bearer {token}
 ```
 
-#### 2. Buscar Usuário por ID
+**Resposta (200):**
+```json
+{
+  "items": [
+    {
+      "id": 1,
+      "nomeFilial": "Empresa Exemplo",
+      "email": "contato@empresa.com",
+      "cnpj": "12.345.678/0001-90",
+      "endereco": "Rua das Flores, 123",
+      "telefone": "(11) 99999-9999",
+      "perfil": "ADMIN",
+      "dataCriacao": "2025-01-16T10:00:00Z",
+      "dataAtualizacao": "2025-01-16T10:00:00Z",
+      "links": []
+    }
+  ],
+  "pageNumber": 1,
+  "pageSize": 10,
+  "totalItems": 1,
+  "totalPages": 1,
+  "hasPreviousPage": false,
+  "hasNextPage": false,
+  "links": []
+}
+```
+
+#### **🔍 2. BUSCAR USUÁRIO POR ID**
+
+**Versão 1.0:**
 ```http
-GET /api/v1/usuarios/{id}
-GET /api/v2/usuarios/{id}
+GET /api/v1/usuarios/1
 ```
 
-#### 3. Buscar Usuário por Email
+**Versão 2.0:**
 ```http
-GET /api/v1/usuarios/email/{email}
-GET /api/v2/usuarios/email/{email}
+GET /api/v2/usuarios/1
+Authorization: Bearer {token}
 ```
 
-#### 4. Criar Usuário
+**Resposta (200):**
+```json
+{
+  "id": 1,
+  "nomeFilial": "Empresa Exemplo",
+  "email": "contato@empresa.com",
+  "cnpj": "12.345.678/0001-90",
+  "endereco": "Rua das Flores, 123",
+  "telefone": "(11) 99999-9999",
+  "perfil": "ADMIN",
+  "dataCriacao": "2025-01-16T10:00:00Z",
+  "dataAtualizacao": "2025-01-16T10:00:00Z",
+  "links": []
+}
+```
+
+#### **📧 3. BUSCAR USUÁRIO POR EMAIL**
+
+**Versão 1.0:**
+```http
+GET /api/v1/usuarios/email/contato@empresa.com
+```
+
+**Versão 2.0:**
+```http
+GET /api/v2/usuarios/email/contato@empresa.com
+Authorization: Bearer {token}
+```
+
+#### **➕ 4. CRIAR USUÁRIO**
+
+**Versão 1.0:**
 ```http
 POST /api/v1/usuarios
-POST /api/v2/usuarios
 Content-Type: application/json
 ```
-**Body**:
+
+**Versão 2.0:**
+```http
+POST /api/v2/usuarios
+Content-Type: application/json
+Authorization: Bearer {token}
+```
+
+**Body (Ambas as versões):**
 ```json
 {
   "nomeFilial": "Nova Empresa",
@@ -369,18 +499,79 @@ Content-Type: application/json
 }
 ```
 
-#### 5. Atualizar Usuário
+**Resposta (201):**
+```json
+{
+  "id": 2,
+  "nomeFilial": "Nova Empresa",
+  "email": "novo@empresa.com",
+  "cnpj": "98.765.432/0001-10",
+  "endereco": "Av. Principal, 456",
+  "telefone": "(11) 88888-8888",
+  "perfil": "ADMIN",
+  "dataCriacao": "2025-01-16T10:30:00Z",
+  "dataAtualizacao": "2025-01-16T10:30:00Z",
+  "links": []
+}
+```
+
+#### **✏️ 5. ATUALIZAR USUÁRIO**
+
+**Versão 1.0:**
 ```http
-PUT /api/v1/usuarios/{id}
-PUT /api/v2/usuarios/{id}
+PUT /api/v1/usuarios/2
 Content-Type: application/json
 ```
 
-#### 6. Deletar Usuário
+**Versão 2.0:**
 ```http
-DELETE /api/v1/usuarios/{id}
-DELETE /api/v2/usuarios/{id}
+PUT /api/v2/usuarios/2
+Content-Type: application/json
+Authorization: Bearer {token}
 ```
+
+**Body (Ambas as versões):**
+```json
+{
+  "nomeFilial": "Empresa Atualizada",
+  "email": "atualizado@empresa.com",
+  "cnpj": "98.765.432/0001-10",
+  "endereco": "Av. Principal, 456 - Atualizada",
+  "telefone": "(11) 77777-7777",
+  "perfil": "GERENTE"
+}
+```
+
+**Resposta (200):**
+```json
+{
+  "id": 2,
+  "nomeFilial": "Empresa Atualizada",
+  "email": "atualizado@empresa.com",
+  "cnpj": "98.765.432/0001-10",
+  "endereco": "Av. Principal, 456 - Atualizada",
+  "telefone": "(11) 77777-7777",
+  "perfil": "GERENTE",
+  "dataCriacao": "2025-01-16T10:30:00Z",
+  "dataAtualizacao": "2025-01-16T11:00:00Z",
+  "links": []
+}
+```
+
+#### **🗑️ 6. DELETAR USUÁRIO**
+
+**Versão 1.0:**
+```http
+DELETE /api/v1/usuarios/2
+```
+
+**Versão 2.0:**
+```http
+DELETE /api/v2/usuarios/2
+Authorization: Bearer {token}
+```
+
+**Resposta (204):** No Content
 
 ---
 
@@ -552,28 +743,109 @@ Content-Type: application/json
 
 ### 🏥 **ENDPOINTS DE HEALTH CHECK** (`/api/v{version}/health`)
 
-#### 1. Health Check Geral
+#### **🎯 O que é Health Check?**
+
+**Health Check** é um **sistema de monitoramento** que verifica se a aplicação está funcionando corretamente. É como um **"check-up médico"** para a sua API!
+
+**Para que serve:**
+- ✅ **Verificar** se está tudo funcionando (banco, memória, serviços)
+- ✅ **Monitorar** em tempo real (status verde/amarelo/vermelho)
+- ✅ **Alertar** quando algo está errado
+- ✅ **Debug** e troubleshooting
+
+**Tipos de Health Checks:**
+- 🔵 **Database**: Verifica conexão com Oracle
+- 🔵 **Memory**: Verifica uso de memória (limite: 1GB)
+- 🔵 **Custom**: Verifica serviços externos
+
+**Status possíveis:**
+- 🟢 **Healthy**: Tudo funcionando
+- 🟡 **Degraded**: Alguns problemas
+- 🔴 **Unhealthy**: Problemas críticos
+
+---
+
+#### **1. Health Check Geral**
 ```http
 GET /api/v1/health
 GET /api/v2/health
 ```
 
-#### 2. Health Check do Banco de Dados
+**Resposta (200) - Tudo funcionando:**
+```json
+{
+  "status": "Healthy",
+  "totalDuration": "00:00:00.1234567",
+  "entries": {
+    "database": {
+      "status": "Healthy",
+      "duration": "00:00:00.0500000",
+      "description": "Conexão com o banco de dados OK."
+    },
+    "memory": {
+      "status": "Healthy",
+      "duration": "00:00:00.0000000",
+      "description": "Memória OK. Consumido: 45 MB, Limite: 1024 MB."
+    }
+  }
+}
+```
+
+#### **2. Health Check do Banco de Dados**
 ```http
 GET /api/v1/health/database
 GET /api/v2/health/database
 ```
 
-#### 3. Health Check da Memória
+**Resposta (200) - Banco OK:**
+```json
+{
+  "status": "Healthy",
+  "totalDuration": "00:00:00.0500000",
+  "entries": {
+    "database": {
+      "status": "Healthy",
+      "duration": "00:00:00.0500000",
+      "description": "Conexão com o banco de dados OK."
+    }
+  }
+}
+```
+
+#### **3. Health Check da Memória**
 ```http
 GET /api/v1/health/memory
 GET /api/v2/health/memory
 ```
 
-#### 4. Health Check Padrão (.NET)
+**Resposta (200) - Memória OK:**
+```json
+{
+  "status": "Healthy",
+  "totalDuration": "00:00:00.0000000",
+  "entries": {
+    "memory": {
+      "status": "Healthy",
+      "duration": "00:00:00.0000000",
+      "description": "Memória OK. Consumido: 45 MB, Limite: 1024 MB."
+    }
+  }
+}
+```
+
+#### **4. Health Check Padrão (.NET)**
 ```http
 GET /health/ready
 GET /health/live
+```
+
+**Resposta (200) - Aplicação pronta:**
+```json
+{
+  "status": "Healthy",
+  "totalDuration": "00:00:00.1234567",
+  "entries": {}
+}
 ```
 
 ---

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using challenge_3_net.Models.DTOs;
 using challenge_3_net.Services.Interfaces;
 
@@ -34,6 +35,9 @@ namespace challenge_3_net.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(PagedResultDto<MotoResponseDto>), 200)]
         [ProducesResponseType(400)]
+        [ApiVersion("1.0")]
+        [ApiVersion("2.0")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "ADMIN,GERENTE,OPERADOR")]
         public async Task<ActionResult<PagedResultDto<MotoResponseDto>>> ObterTodas(
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
@@ -194,6 +198,9 @@ namespace challenge_3_net.Controllers
         [ProducesResponseType(typeof(MotoResponseDto), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(409)]
+        [ApiVersion("1.0")]
+        [ApiVersion("2.0")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "ADMIN,GERENTE,OPERADOR")]
         public async Task<ActionResult<MotoResponseDto>> Criar([FromBody] CriarMotoDto dto)
         {
             try
@@ -232,6 +239,9 @@ namespace challenge_3_net.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(409)]
+        [ApiVersion("1.0")]
+        [ApiVersion("2.0")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "ADMIN,GERENTE,OPERADOR")]
         public async Task<ActionResult<MotoResponseDto>> Atualizar(long id, [FromBody] AtualizarMotoDto dto)
         {
             try
@@ -270,6 +280,9 @@ namespace challenge_3_net.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
+        [ApiVersion("1.0")]
+        [ApiVersion("2.0")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "ADMIN,GERENTE")]
         public async Task<IActionResult> Excluir(long id)
         {
             try

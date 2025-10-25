@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using challenge_3_net.Models;
 using challenge_3_net.Models.DTOs;
 using challenge_3_net.Services.Interfaces;
@@ -35,6 +36,9 @@ namespace challenge_3_net.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(PagedResultDto<StatusMotoResponseDto>), 200)]
         [ProducesResponseType(400)]
+        [ApiVersion("1.0")]
+        [ApiVersion("2.0")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "ADMIN,GERENTE,OPERADOR")]
         public async Task<ActionResult<PagedResultDto<StatusMotoResponseDto>>> ObterTodos(
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
@@ -204,6 +208,9 @@ namespace challenge_3_net.Controllers
         [ProducesResponseType(typeof(StatusMotoResponseDto), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
+        [ApiVersion("1.0")]
+        [ApiVersion("2.0")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "ADMIN,GERENTE,OPERADOR")]
         public async Task<ActionResult<StatusMotoResponseDto>> Criar([FromBody] CriarStatusMotoDto dto)
         {
             try
