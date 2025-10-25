@@ -342,6 +342,21 @@ GET http://localhost:5000/api/usuarios?version=2.0
 
 ## 📚 DOCUMENTAÇÃO COMPLETA DE ENDPOINTS
 
+### 🎯 **CREDENCIAIS DE TESTE DISPONÍVEIS**
+
+Para testar a autenticação e os endpoints v2.0, use estas credenciais:
+
+| Campo | Valor |
+|-------|-------|
+| **Email** | `ala@example.com` |
+| **Senha** | `123456` |
+| **Perfil** | `ADMIN` |
+| **ID do Usuário** | `53` |
+
+> **💡 DICA:** Use essas credenciais para fazer login e obter o token JWT necessário para acessar os endpoints v2.0.
+
+---
+
 ### 🔐 **ENDPOINTS DE AUTENTICAÇÃO** (`/api/v{version}/auth`)
 
 #### 1. Login (Gerar Token JWT)
@@ -353,10 +368,15 @@ Content-Type: application/json
 **Body**:
 ```json
 {
-  "email": "admin@empresa.com",
+  "email": "ala@example.com",
   "senha": "123456"
 }
 ```
+
+> **💡 CREDENCIAIS DE TESTE DISPONÍVEIS:**
+> - **Email:** `ala@example.com`
+> - **Senha:** `123456`
+> - **Perfil:** ADMIN
 
 **Resposta** (200):
 ```json
@@ -377,10 +397,10 @@ Authorization: Bearer {token}
 **Resposta** (200):
 ```json
 {
-  "userId": "1",
-  "email": "admin@empresa.com",
+  "userId": "53",
+  "email": "ala@example.com",
   "role": "ADMIN",
-  "nomeFilial": "Empresa Exemplo",
+  "nomeFilial": "Empresa Teste",
   "message": "Token JWT válido."
 }
 ```
