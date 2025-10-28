@@ -142,7 +142,7 @@ builder.Services.AddScoped<challenge_3_net.Services.ML.MotoAnalysisService>();
 
 // Configurar autenticação JWT
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var secretKey = jwtSettings["SecretKey"] ?? "TrackZone_Super_Secret_Key_2024_Advanced_Business_Development";
+var secretKey = jwtSettings["SecretKey"] ?? "TrackZone_Super_Secret_Key_2024_Advanced_Business_Development_With_DotNet";
 var issuer = jwtSettings["Issuer"] ?? "TrackZoneAPI";
 var audience = jwtSettings["Audience"] ?? "TrackZoneUsers";
 

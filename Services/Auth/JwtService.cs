@@ -34,7 +34,7 @@ namespace challenge_3_net.Services.Auth
             try
             {
                 var jwtSettings = _configuration.GetSection("JwtSettings");
-                var secretKey = jwtSettings["SecretKey"] ?? "TrackZone_Super_Secret_Key_2024_Advanced_Business_Development";
+                var secretKey = jwtSettings["SecretKey"] ?? "TrackZone_Super_Secret_Key_2024_Advanced_Business_Development_With_DotNet";
                 var issuer = jwtSettings["Issuer"] ?? "TrackZoneAPI";
                 var audience = jwtSettings["Audience"] ?? "TrackZoneUsers";
                 var expiryMinutes = int.Parse(jwtSettings["ExpiryMinutes"] ?? "60");
@@ -57,16 +57,16 @@ namespace challenge_3_net.Services.Auth
                 switch (usuario.Perfil)
                 {
                     case PerfilUsuario.ADMIN:
-                        claims.Add(new Claim(ClaimTypes.Role, "Admin"));
-                        claims.Add(new Claim(ClaimTypes.Role, "Gerente"));
-                        claims.Add(new Claim(ClaimTypes.Role, "Operador"));
+                        claims.Add(new Claim(ClaimTypes.Role, "ADMIN"));
+                        claims.Add(new Claim(ClaimTypes.Role, "GERENTE"));
+                        claims.Add(new Claim(ClaimTypes.Role, "OPERADOR"));
                         break;
                     case PerfilUsuario.GERENTE:
-                        claims.Add(new Claim(ClaimTypes.Role, "Gerente"));
-                        claims.Add(new Claim(ClaimTypes.Role, "Operador"));
+                        claims.Add(new Claim(ClaimTypes.Role, "GERENTE"));
+                        claims.Add(new Claim(ClaimTypes.Role, "OPERADOR"));
                         break;
                     case PerfilUsuario.OPERADOR:
-                        claims.Add(new Claim(ClaimTypes.Role, "Operador"));
+                        claims.Add(new Claim(ClaimTypes.Role, "OPERADOR"));
                         break;
                 }
 
@@ -101,7 +101,7 @@ namespace challenge_3_net.Services.Auth
             try
             {
                 var jwtSettings = _configuration.GetSection("JwtSettings");
-                var secretKey = jwtSettings["SecretKey"] ?? "TrackZone_Super_Secret_Key_2024_Advanced_Business_Development";
+                var secretKey = jwtSettings["SecretKey"] ?? "TrackZone_Super_Secret_Key_2024_Advanced_Business_Development_With_DotNet";
                 var issuer = jwtSettings["Issuer"] ?? "TrackZoneAPI";
                 var audience = jwtSettings["Audience"] ?? "TrackZoneUsers";
 
@@ -217,7 +217,7 @@ namespace challenge_3_net.Services.Auth
         /// <returns>True se é admin, false caso contrário</returns>
         public bool IsAdmin(ClaimsPrincipal principal)
         {
-            return HasRole(principal, "Admin");
+            return HasRole(principal, "ADMIN");
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace challenge_3_net.Services.Auth
         /// <returns>True se é gerente ou admin, false caso contrário</returns>
         public bool IsManagerOrAdmin(ClaimsPrincipal principal)
         {
-            return HasRole(principal, "Admin") || HasRole(principal, "Gerente");
+            return HasRole(principal, "ADMIN") || HasRole(principal, "GERENTE");
         }
     }
 }

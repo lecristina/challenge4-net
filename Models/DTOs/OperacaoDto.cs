@@ -8,9 +8,10 @@ namespace challenge_3_net.Models.DTOs
     public class CriarOperacaoDto
     {
         /// <summary>
-        /// Tipo da operação realizada
+        /// Tipo da operação realizada (0 = CHECK_IN, 1 = CHECK_OUT)
         /// </summary>
         [Required(ErrorMessage = "Tipo da operação é obrigatório")]
+        [Range(0, 1, ErrorMessage = "Tipo da operação deve ser 0 (CHECK_IN) ou 1 (CHECK_OUT)")]
         public TipoOperacao TipoOperacao { get; set; }
 
         /// <summary>

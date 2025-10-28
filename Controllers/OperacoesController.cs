@@ -118,6 +118,16 @@ namespace challenge_3_net.Controllers
             {
                 return NotFound(ex.Message);
             }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException ex) when (ex.InnerException?.Message?.Contains("ORA-02290") == true)
+            {
+                _logger.LogWarning(ex, "Tentativa de criar operação com tipo inválido: {TipoOperacao}", dto.TipoOperacao);
+                return BadRequest(new { 
+                    Message = "Tipo de operação inválido", 
+                    Details = "O tipo de operação deve ser 0 (CHECK_IN) ou 1 (CHECK_OUT)",
+                    TipoOperacaoEnviado = dto.TipoOperacao,
+                    TiposValidos = new[] { "0 = CHECK_IN", "1 = CHECK_OUT" }
+                });
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao criar operação");

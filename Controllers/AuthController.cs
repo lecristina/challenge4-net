@@ -221,7 +221,7 @@ namespace challenge_3_net.Controllers
                 {
                     IsAdmin = isAdmin,
                     IsManager = isManager,
-                    IsOperador = User.IsInRole("Operador"),
+                    IsOperador = User.IsInRole("OPERADOR"),
                     Message = isAdmin ? "Usuário tem permissões de administrador" : 
                               isManager ? "Usuário tem permissões de gerente" : 
                               "Usuário tem permissões de operador"
