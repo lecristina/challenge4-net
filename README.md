@@ -129,32 +129,92 @@ dotnet run
 
 ### 🧪 Executando os Testes
 
-#### 📋 Testes Unitários
+#### 📋 Pré-requisitos
+- .NET 9 SDK instalado
+- Projeto compilado (`dotnet build`)
+- Aplicação deve estar configurada para testes
+
+#### 🧪 Testes Unitários
+Os testes unitários testam componentes individuais isoladamente usando mocks e bancos de dados em memória.
+
 ```bash
-# Executar todos os testes
+# Executar todos os testes unitários
 dotnet test
 
-# Executar testes específicos
+# Executar testes específicos por classe
 dotnet test --filter "JwtServiceTests"
+dotnet test --filter "MLServiceTests"
 
-# Executar com cobertura
+# Executar testes unitários apenas
+dotnet test --filter "FullyQualifiedName~Unit"
+
+# Executar com cobertura de código
 dotnet test --collect:"XPlat Code Coverage"
 ```
 
-#### 🔍 Testes de Integração
-```bash
-# Executar testes de integração
-dotnet test Tests/Integration/
+**Testes Unitários Disponíveis:**
+- ✅ `JwtServiceTests` - Testes do serviço JWT (geração, validação, roles)
+- ✅ `MLServiceTests` - Testes do serviço ML.NET (treinamento, predição, análise)
 
-# Executar com WebApplicationFactory
+#### 🔍 Testes de Integração
+Os testes de integração usam `WebApplicationFactory` para testar a aplicação completa em um ambiente de teste real.
+
+```bash
+# Executar todos os testes de integração
 dotnet test --filter "Integration"
+
+# Executar testes de integração específicos
+dotnet test --filter "AuthIntegrationTests"
+dotnet test --filter "MotoIntegrationTests"
+dotnet test --filter "HealthCheckIntegrationTests"
+
+# Executar testes de integração apenas
+dotnet test --filter "FullyQualifiedName~Integration"
 ```
+
+**Testes de Integração Disponíveis:**
+- ✅ `AuthIntegrationTests` - Testes de autenticação (login, validação, user-info)
+- ✅ `MotoIntegrationTests` - Testes de endpoints de motos (GET, POST, paginação)
+- ✅ `HealthCheckIntegrationTests` - Testes de health checks (health, ready, live, database)
 
 #### 📊 Relatório de Cobertura
 ```bash
-# Gerar relatório de cobertura
+# Gerar relatório de cobertura completo
 dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults
+
+# Gerar relatório com detalhes
+dotnet test --collect:"XPlat Code Coverage" --settings:coverlet.runsettings --results-directory ./TestResults
 ```
+
+#### 🎯 Estrutura dos Testes
+```
+Tests/
+├── Unit/
+│   ├── JwtServiceTests.cs      # Testes unitários do JWT
+│   └── MLServiceTests.cs       # Testes unitários do ML.NET
+└── Integration/
+    ├── AuthIntegrationTests.cs      # Testes de integração de autenticação
+    ├── MotoIntegrationTests.cs     # Testes de integração de motos
+    └── HealthCheckIntegrationTests.cs # Testes de health checks
+```
+
+#### ✅ Verificação de Testes
+Para garantir que todos os testes estão passando:
+
+```bash
+# Executar todos os testes e verificar resultados
+dotnet test --verbosity normal
+
+# Executar com detalhes de falhas
+dotnet test --verbosity detailed
+```
+
+#### 📝 Notas Importantes sobre Testes
+1. **Testes de Integração** requerem que o projeto esteja configurado corretamente
+2. **WebApplicationFactory** cria uma instância de teste da aplicação
+3. **Testes de Integração** podem fazer requisições HTTP reais para a API
+4. **Testes Unitários** usam mocks e bancos em memória para isolamento
+5. Os testes de integração testam autenticação JWT real, então precisam de um usuário válido no banco
 
 ### 🔐 Autenticação e Segurança
 
