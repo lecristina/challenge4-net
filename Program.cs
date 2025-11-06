@@ -37,20 +37,33 @@ builder.Services.AddVersionedApiExplorer(setup =>
 builder.Services.AddApplicationInsightsTelemetry();
 
 // Configurar Entity Framework
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+// Em ambiente de teste, o CustomWebApplicationFactory irá substituir esta configuração
+if (!builder.Environment.IsEnvironment("Testing"))
 {
-    if (!string.IsNullOrEmpty(connectionString))
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
-        options.UseOracle(connectionString);
-    }
-    else
+        if (!string.IsNullOrEmpty(connectionString))
+        {
+            options.UseOracle(connectionString);
+        }
+        else
+        {
+            // Fallback para Oracle FIAP em desenvolvimento
+            options.UseOracle("Data Source=oracle.fiap.com.br:1521/ORCL;User Id=rm555241;Password=230205;Connection Timeout=30;");
+        }
+    });
+}
+else
+{
+    // Em ambiente de teste, apenas registrar o DbContext sem provider
+    // O CustomWebApplicationFactory irá substituir com InMemory
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
-        // Fallback para Oracle FIAP em desenvolvimento
-        options.UseOracle("Data Source=oracle.fiap.com.br:1521/ORCL;User Id=rm555241;Password=230205;Connection Timeout=30;");
-    }
-});
+        // Placeholder - será substituído pelo CustomWebApplicationFactory
+    });
+}
 
 // Configurar AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));

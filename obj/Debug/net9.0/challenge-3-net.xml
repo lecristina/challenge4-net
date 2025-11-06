@@ -933,7 +933,7 @@
         </member>
         <member name="P:challenge_3_net.Models.DTOs.CriarOperacaoDto.TipoOperacao">
             <summary>
-            Tipo da operação realizada
+            Tipo da operação realizada (0 = CHECK_IN, 1 = CHECK_OUT)
             </summary>
         </member>
         <member name="P:challenge_3_net.Models.DTOs.CriarOperacaoDto.Descricao">
@@ -2376,9 +2376,54 @@
             Serviço para gerenciamento de usuários
             </summary>
         </member>
+        <member name="T:challenge_3_net.Tests.Integration.AuthIntegrationTests">
+            <summary>
+            Testes de integração para autenticação
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Tests.Integration.HealthCheckIntegrationTests">
+            <summary>
+            Testes de integração para Health Checks
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Tests.Integration.MLIntegrationTests">
+            <summary>
+            Testes de integração para endpoints de Machine Learning (v2.0)
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Tests.Integration.MotoIntegrationTests">
+            <summary>
+            Testes de integração para endpoints de motos
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Tests.Integration.MotoV1IntegrationTests">
+            <summary>
+            Testes de integração para endpoints de motos v1.0
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Tests.Integration.OperacaoIntegrationTests">
+            <summary>
+            Testes de integração para endpoints de operações
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Tests.Integration.StatusMotoIntegrationTests">
+            <summary>
+            Testes de integração para endpoints de status de motos
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Tests.Integration.UsuarioIntegrationTests">
+            <summary>
+            Testes de integração para endpoints de usuários
+            </summary>
+        </member>
         <member name="T:challenge_3_net.Tests.Unit.JwtServiceTests">
             <summary>
             Testes unitários para JwtService
+            </summary>
+        </member>
+        <member name="T:challenge_3_net.Tests.Unit.MLServiceTests">
+            <summary>
+            Testes unitários para MotoAnalysisService (ML.NET)
             </summary>
         </member>
     </members>
