@@ -24,15 +24,19 @@ namespace challenge_3_net.Tests.Unit
             _mockConfiguration = new Mock<IConfiguration>();
             _mockLogger = new Mock<ILogger<JwtService>>();
 
-            // Configurar mock do IConfiguration
-            _mockConfiguration.Setup(x => x["JwtSettings:SecretKey"])
+            // Configurar mock do IConfiguration com seção JwtSettings
+            var jwtSettingsSection = new Mock<IConfigurationSection>();
+            jwtSettingsSection.Setup(x => x["SecretKey"])
                 .Returns("TestSecretKeyForUnitTesting123456789");
-            _mockConfiguration.Setup(x => x["JwtSettings:Issuer"])
+            jwtSettingsSection.Setup(x => x["Issuer"])
                 .Returns("TestIssuer");
-            _mockConfiguration.Setup(x => x["JwtSettings:Audience"])
+            jwtSettingsSection.Setup(x => x["Audience"])
                 .Returns("TestAudience");
-            _mockConfiguration.Setup(x => x["JwtSettings:ExpiryMinutes"])
+            jwtSettingsSection.Setup(x => x["ExpiryMinutes"])
                 .Returns("60");
+
+            _mockConfiguration.Setup(x => x.GetSection("JwtSettings"))
+                .Returns(jwtSettingsSection.Object);
 
             // Configurar DbContext em memória
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -119,6 +123,7 @@ namespace challenge_3_net.Tests.Unit
 
             // Assert
             Assert.NotNull(principal);
+            Assert.NotNull(principal.Identity);
             Assert.True(principal.Identity.IsAuthenticated);
             Assert.Equal("1", principal.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
             Assert.Equal("Teste Filial", principal.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value);
@@ -169,7 +174,8 @@ namespace challenge_3_net.Tests.Unit
             var principal = _jwtService.ValidateToken(token);
 
             // Act
-            var hasAdminRole = _jwtService.HasRole(principal, "Admin");
+            Assert.NotNull(principal);
+            var hasAdminRole = _jwtService.HasRole(principal, "ADMIN");
             var isAdmin = _jwtService.IsAdmin(principal);
             var isManagerOrAdmin = _jwtService.IsManagerOrAdmin(principal);
 
@@ -197,7 +203,8 @@ namespace challenge_3_net.Tests.Unit
             var principal = _jwtService.ValidateToken(token);
 
             // Act
-            var hasAdminRole = _jwtService.HasRole(principal, "Admin");
+            Assert.NotNull(principal);
+            var hasAdminRole = _jwtService.HasRole(principal, "ADMIN");
             var isAdmin = _jwtService.IsAdmin(principal);
             var isManagerOrAdmin = _jwtService.IsManagerOrAdmin(principal);
 
@@ -225,7 +232,8 @@ namespace challenge_3_net.Tests.Unit
             var principal = _jwtService.ValidateToken(token);
 
             // Act
-            var hasManagerRole = _jwtService.HasRole(principal, "Gerente");
+            Assert.NotNull(principal);
+            var hasManagerRole = _jwtService.HasRole(principal, "GERENTE");
             var isAdmin = _jwtService.IsAdmin(principal);
             var isManagerOrAdmin = _jwtService.IsManagerOrAdmin(principal);
 
