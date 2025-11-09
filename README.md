@@ -2,6 +2,11 @@
 
 ## 🚀 ADVANCED BUSINESS DEVELOPMENT WITH .NET
 
+## Integrantes
+- André Rogério Vieira Pavanela Altobelli Antunes, RM: 554764
+- Enrico Figueiredo Del Guerra, RM: 558604
+- Leticia Cristina Dos Santos Passos, RM: 555241
+
 ### 📋 Visão Geral do Projeto
 
 O **TrackZone API** é uma solução completa de gestão de motos desenvolvida com **.NET 9** e **ASP.NET Core**, implementando as melhores práticas de desenvolvimento empresarial e arquitetura moderna.
