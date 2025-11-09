@@ -50,10 +50,17 @@ namespace challenge_3_net.Services.ML
                 var dataView = _mlContext.Data.LoadFromEnumerable(trainingData);
 
                 // Definir pipeline de treinamento
-                var pipeline = _mlContext.Transforms.Categorical.OneHotEncoding("PerfilEncoded", "Perfil")
+                // Converter coluna Status de String para Key e renomear para Label (requerido pelo trainer)
+                // Converter colunas numéricas para float antes de concatenar
+                var pipeline = _mlContext.Transforms.Conversion.MapValueToKey("Label", "Status")
+                    .Append(_mlContext.Transforms.CopyColumns("DiasDesdeCriacaoFloat", "DiasDesdeCriacao"))
+                    .Append(_mlContext.Transforms.Conversion.ConvertType("DiasDesdeCriacaoFloat", "DiasDesdeCriacaoFloat", DataKind.Single))
+                    .Append(_mlContext.Transforms.CopyColumns("TotalOperacoesFloat", "TotalOperacoes"))
+                    .Append(_mlContext.Transforms.Conversion.ConvertType("TotalOperacoesFloat", "TotalOperacoesFloat", DataKind.Single))
+                    .Append(_mlContext.Transforms.Categorical.OneHotEncoding("PerfilEncoded", "Perfil"))
                     .Append(_mlContext.Transforms.Categorical.OneHotEncoding("TipoOperacaoEncoded", "TipoOperacao"))
-                    .Append(_mlContext.Transforms.Concatenate("Features", "PerfilEncoded", "TipoOperacaoEncoded", "DiasDesdeCriacao", "TotalOperacoes"))
-                    .Append(_mlContext.MulticlassClassification.Trainers.SdcaMaximumEntropy("Status", "Features"))
+                    .Append(_mlContext.Transforms.Concatenate("Features", "PerfilEncoded", "TipoOperacaoEncoded", "DiasDesdeCriacaoFloat", "TotalOperacoesFloat"))
+                    .Append(_mlContext.MulticlassClassification.Trainers.SdcaMaximumEntropy(labelColumnName: "Label", featureColumnName: "Features"))
                     .Append(_mlContext.Transforms.Conversion.MapKeyToValue("PredictedLabel", "PredictedLabel"));
 
                 // Treinar modelo
@@ -61,7 +68,7 @@ namespace challenge_3_net.Services.ML
 
                 // Avaliar modelo
                 var predictions = _model.Transform(dataView);
-                var metrics = _mlContext.MulticlassClassification.Evaluate(predictions);
+                var metrics = _mlContext.MulticlassClassification.Evaluate(predictions, labelColumnName: "Label", scoreColumnName: "Score");
 
                 _logger.LogInformation("Modelo treinado com sucesso. Acurácia: {Accuracy}", metrics.MacroAccuracy);
 
