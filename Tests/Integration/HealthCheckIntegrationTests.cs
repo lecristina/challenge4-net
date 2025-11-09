@@ -8,12 +8,12 @@ namespace challenge_3_net.Tests.Integration
     /// <summary>
     /// Testes de integração para Health Checks
     /// </summary>
-    public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
+    public class HealthCheckIntegrationTests : IClassFixture<CustomWebApplicationFactory<Program>>
     {
-        private readonly WebApplicationFactory<Program> _factory;
+        private readonly CustomWebApplicationFactory<Program> _factory;
         private readonly HttpClient _client;
 
-        public HealthCheckIntegrationTests(WebApplicationFactory<Program> factory)
+        public HealthCheckIntegrationTests(CustomWebApplicationFactory<Program> factory)
         {
             _factory = factory;
             _client = _factory.CreateClient();

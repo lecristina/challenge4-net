@@ -10,12 +10,12 @@ namespace challenge_3_net.Tests.Integration
     /// <summary>
     /// Testes de integração para endpoints de motos
     /// </summary>
-    public class MotoIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
+    public class MotoIntegrationTests : IClassFixture<CustomWebApplicationFactory<Program>>
     {
-        private readonly WebApplicationFactory<Program> _factory;
+        private readonly CustomWebApplicationFactory<Program> _factory;
         private readonly HttpClient _client;
 
-        public MotoIntegrationTests(WebApplicationFactory<Program> factory)
+        public MotoIntegrationTests(CustomWebApplicationFactory<Program> factory)
         {
             _factory = factory;
             _client = _factory.CreateClient();

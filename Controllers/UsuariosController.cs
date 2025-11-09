@@ -36,9 +36,33 @@ namespace challenge_3_net.Controllers
         [ProducesResponseType(typeof(PagedResultDto<UsuarioResponseDto>), 200)]
         [ProducesResponseType(400)]
         [ApiVersion("1.0")]
+        public async Task<ActionResult<PagedResultDto<UsuarioResponseDto>>> ObterTodosV1(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                if (pageNumber < 1 || pageSize < 1 || pageSize > 100)
+                {
+                    return BadRequest("pageNumber deve ser >= 1 e pageSize deve estar entre 1 e 100");
+                }
+
+                var resultado = await _usuarioService.ObterTodosAsync(pageNumber, pageSize);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao obter usuários");
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(PagedResultDto<UsuarioResponseDto>), 200)]
+        [ProducesResponseType(400)]
         [ApiVersion("2.0")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "ADMIN,GERENTE,OPERADOR")]
-        public async Task<ActionResult<PagedResultDto<UsuarioResponseDto>>> ObterTodos(
+        public async Task<ActionResult<PagedResultDto<UsuarioResponseDto>>> ObterTodosV2(
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
         {
@@ -101,9 +125,36 @@ namespace challenge_3_net.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(409)]
         [ApiVersion("1.0")]
+        public async Task<ActionResult<UsuarioResponseDto>> CriarV1([FromBody] CriarUsuarioDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var usuario = await _usuarioService.CriarAsync(dto);
+                return CreatedAtAction(nameof(ObterPorId), new { id = usuario.Id }, usuario);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao criar usuário");
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(UsuarioResponseDto), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(409)]
         [ApiVersion("2.0")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "ADMIN,GERENTE")]
-        public async Task<ActionResult<UsuarioResponseDto>> Criar([FromBody] CriarUsuarioDto dto)
+        public async Task<ActionResult<UsuarioResponseDto>> CriarV2([FromBody] CriarUsuarioDto dto)
         {
             try
             {
@@ -141,7 +192,43 @@ namespace challenge_3_net.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(409)]
-        public async Task<ActionResult<UsuarioResponseDto>> Atualizar(int id, [FromBody] AtualizarUsuarioDto dto)
+        [ApiVersion("1.0")]
+        public async Task<ActionResult<UsuarioResponseDto>> AtualizarV1(int id, [FromBody] AtualizarUsuarioDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var usuario = await _usuarioService.AtualizarAsync(id, dto);
+                if (usuario == null)
+                {
+                    return NotFound($"Usuário com ID {id} não encontrado");
+                }
+
+                return Ok(usuario);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao atualizar usuário com ID {Id}", id);
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(UsuarioResponseDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(409)]
+        [ApiVersion("2.0")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "ADMIN,GERENTE")]
+        public async Task<ActionResult<UsuarioResponseDto>> AtualizarV2(int id, [FromBody] AtualizarUsuarioDto dto)
         {
             try
             {
@@ -179,7 +266,32 @@ namespace challenge_3_net.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> Excluir(int id)
+        [ApiVersion("1.0")]
+        public async Task<IActionResult> ExcluirV1(int id)
+        {
+            try
+            {
+                var sucesso = await _usuarioService.ExcluirAsync(id);
+                if (!sucesso)
+                {
+                    return NotFound($"Usuário com ID {id} não encontrado");
+                }
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao excluir usuário com ID {Id}", id);
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ApiVersion("2.0")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "ADMIN,GERENTE")]
+        public async Task<IActionResult> ExcluirV2(int id)
         {
             try
             {

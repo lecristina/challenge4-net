@@ -10,12 +10,12 @@ namespace challenge_3_net.Tests.Integration
     /// <summary>
     /// Testes de integração para endpoints de status de motos
     /// </summary>
-    public class StatusMotoIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
+    public class StatusMotoIntegrationTests : IClassFixture<CustomWebApplicationFactory<Program>>
     {
-        private readonly WebApplicationFactory<Program> _factory;
+        private readonly CustomWebApplicationFactory<Program> _factory;
         private readonly HttpClient _client;
 
-        public StatusMotoIntegrationTests(WebApplicationFactory<Program> factory)
+        public StatusMotoIntegrationTests(CustomWebApplicationFactory<Program> factory)
         {
             _factory = factory;
             _client = _factory.CreateClient();
@@ -152,16 +152,16 @@ namespace challenge_3_net.Tests.Integration
         }
 
         [Fact]
-        public async Task GetStatusMotosV1_WithoutToken_ShouldReturnUnauthorized()
+        public async Task GetStatusMotosV1_WithoutToken_ShouldReturnOk()
         {
-            // Arrange
+            // Arrange - v1.0 não requer token
             _client.DefaultRequestHeaders.Authorization = null;
 
             // Act
             var response = await _client.GetAsync("/api/v1.0/StatusMotos");
 
-            // Assert
-            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            // Assert - v1.0 não requer autenticação, deve retornar OK
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Fact]

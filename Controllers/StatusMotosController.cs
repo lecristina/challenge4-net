@@ -37,9 +37,33 @@ namespace challenge_3_net.Controllers
         [ProducesResponseType(typeof(PagedResultDto<StatusMotoResponseDto>), 200)]
         [ProducesResponseType(400)]
         [ApiVersion("1.0")]
+        public async Task<ActionResult<PagedResultDto<StatusMotoResponseDto>>> ObterTodosV1(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                if (pageNumber < 1 || pageSize < 1 || pageSize > 100)
+                {
+                    return BadRequest("pageNumber deve ser >= 1 e pageSize deve estar entre 1 e 100");
+                }
+
+                var resultado = await _statusMotoService.ObterTodosAsync(pageNumber, pageSize);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao obter status");
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(PagedResultDto<StatusMotoResponseDto>), 200)]
+        [ProducesResponseType(400)]
         [ApiVersion("2.0")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "ADMIN,GERENTE,OPERADOR")]
-        public async Task<ActionResult<PagedResultDto<StatusMotoResponseDto>>> ObterTodos(
+        public async Task<ActionResult<PagedResultDto<StatusMotoResponseDto>>> ObterTodosV2(
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
         {
@@ -209,9 +233,36 @@ namespace challenge_3_net.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ApiVersion("1.0")]
+        public async Task<ActionResult<StatusMotoResponseDto>> CriarV1([FromBody] CriarStatusMotoDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var status = await _statusMotoService.CriarAsync(dto);
+                return CreatedAtAction(nameof(ObterPorId), new { id = status.Id }, status);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao criar status");
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(StatusMotoResponseDto), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [ApiVersion("2.0")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "ADMIN,GERENTE,OPERADOR")]
-        public async Task<ActionResult<StatusMotoResponseDto>> Criar([FromBody] CriarStatusMotoDto dto)
+        public async Task<ActionResult<StatusMotoResponseDto>> CriarV2([FromBody] CriarStatusMotoDto dto)
         {
             try
             {
@@ -247,7 +298,42 @@ namespace challenge_3_net.Controllers
         [ProducesResponseType(typeof(StatusMotoResponseDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<StatusMotoResponseDto>> Atualizar(long id, [FromBody] AtualizarStatusMotoDto dto)
+        [ApiVersion("1.0")]
+        public async Task<ActionResult<StatusMotoResponseDto>> AtualizarV1(long id, [FromBody] AtualizarStatusMotoDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var status = await _statusMotoService.AtualizarAsync(id, dto);
+                if (status == null)
+                {
+                    return NotFound($"Status com ID {id} não encontrado");
+                }
+
+                return Ok(status);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao atualizar status com ID {Id}", id);
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(StatusMotoResponseDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ApiVersion("2.0")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "ADMIN,GERENTE,OPERADOR")]
+        public async Task<ActionResult<StatusMotoResponseDto>> AtualizarV2(long id, [FromBody] AtualizarStatusMotoDto dto)
         {
             try
             {
@@ -285,7 +371,32 @@ namespace challenge_3_net.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> Excluir(long id)
+        [ApiVersion("1.0")]
+        public async Task<IActionResult> ExcluirV1(long id)
+        {
+            try
+            {
+                var sucesso = await _statusMotoService.ExcluirAsync(id);
+                if (!sucesso)
+                {
+                    return NotFound($"Status com ID {id} não encontrado");
+                }
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao excluir status com ID {Id}", id);
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ApiVersion("2.0")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "ADMIN,GERENTE,OPERADOR")]
+        public async Task<IActionResult> ExcluirV2(long id)
         {
             try
             {

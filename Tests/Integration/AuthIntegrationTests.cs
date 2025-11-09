@@ -10,12 +10,12 @@ namespace challenge_3_net.Tests.Integration
     /// <summary>
     /// Testes de integração para autenticação
     /// </summary>
-    public class AuthIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
+    public class AuthIntegrationTests : IClassFixture<CustomWebApplicationFactory<Program>>
     {
-        private readonly WebApplicationFactory<Program> _factory;
+        private readonly CustomWebApplicationFactory<Program> _factory;
         private readonly HttpClient _client;
 
-        public AuthIntegrationTests(WebApplicationFactory<Program> factory)
+        public AuthIntegrationTests(CustomWebApplicationFactory<Program> factory)
         {
             _factory = factory;
             _client = _factory.CreateClient();
